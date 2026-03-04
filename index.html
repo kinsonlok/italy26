@@ -1622,7 +1622,7 @@
             </div>
         </div>
     
-<div id="guide" class="tab-content" style="padding: 20px;">
+<div id="guide" class="tab-content">
     <h2>🎧 景點導賞指南</h2>
     <p style="color: #666; margin-bottom: 20px;">選擇下方景點，查看詳細的內部參觀與展品重點解說，點擊各項目可展開閱讀更多內容。</p>
 
@@ -1999,6 +1999,46 @@
 
     
 <script>
+
+// --- 導賞頁面邏輯 ---
+function toggleGuide(id) {
+    const content = document.getElementById(id + '-content');
+    const icon = document.getElementById(id + '-icon');
+    if (content.style.display === 'none' || content.style.display === '') {
+        content.style.display = 'block';
+        icon.style.transform = 'rotate(180deg)';
+    } else {
+        content.style.display = 'none';
+        icon.style.transform = 'rotate(0deg)';
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    // 綁定導賞子標籤切換事件
+    document.querySelectorAll('.guide-subtab-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            // Remove active class from all guide subtabs
+            document.querySelectorAll('.guide-subtab-btn').forEach(b => {
+                b.classList.remove('active');
+                b.style.background = '#e9ecef';
+                b.style.color = '#333';
+            });
+            // Hide all guide sections
+            document.querySelectorAll('.guide-section').forEach(sec => sec.style.display = 'none');
+
+            // Activate clicked button
+            const target = e.target.getAttribute('data-guide-tab');
+            e.target.classList.add('active');
+            e.target.style.background = '#007BFF';
+            e.target.style.color = 'white';
+
+            // Show target section
+            document.getElementById('guide-' + target).style.display = 'block';
+        });
+    });
+});
+// --------------------
+
         // 自動儲存功能
         function saveToLocalStorage(key, data) {
             localStorage.setItem(key, JSON.stringify(data));
