@@ -1831,7 +1831,7 @@
                     </div>
                     <div style="display: flex; align-items: center; gap: 15px;">
                         <div class="expense-amount">${exp.currency === 'EUR' ? '€' : '$'}${exp.amount.toFixed(2)}</div>
-                        <button class="btn btn-danger" onclick="deleteExpense(${index})">刪除</button>
+                        <button style="background: #ffe3e3; border: 1px solid #ffcccc; cursor: pointer; padding: 4px; border-radius: 4px; display: flex; align-items: center; justify-content: center; width: 24px; height: 24px; font-size: 12px; transition: all 0.2s; margin-left: auto;" onclick="deleteExpense(${index})" title="刪除" onmouseover="this.style.background='#ffcccc'" onmouseout="this.style.background='#ffe3e3'">❌</button>
                     </div>
                 </div>
             `).join('');
@@ -2007,7 +2007,7 @@
                             <div style="color: #666; margin-bottom: 10px;">📍 ${r.city}</div>
                             <div style="color: #666; font-size: 0.95em;">${r.address}</div>
                         </div>
-                        <button class="btn btn-danger" onclick="deleteRestaurant(${index})">刪除</button>
+                        <button style="background: #ffe3e3; border: 1px solid #ffcccc; cursor: pointer; padding: 4px; border-radius: 4px; display: flex; align-items: center; justify-content: center; width: 24px; height: 24px; font-size: 12px; transition: all 0.2s; margin-left: auto;" onclick="deleteRestaurant(${index})" title="刪除" onmouseover="this.style.background='#ffcccc'" onmouseout="this.style.background='#ffe3e3'">❌</button>
                     </div>
                     ${r.note ? `<div style="margin: 10px 0; padding: 10px; background: #f8f9fa; border-radius: 5px;">${r.note}</div>` : ''}
                     <div class="restaurant-links">
@@ -2070,7 +2070,7 @@
                         <div style="font-weight: 500; margin-bottom: 5px;">${todo.text}</div>
                         <div style="font-size: 0.9em; color: #666;">優先度: ${todo.priority}</div>
                     </div>
-                    <button class="btn btn-danger" onclick="deleteTodo(${index})">刪除</button>
+                    <button style="background: #ffe3e3; border: 1px solid #ffcccc; cursor: pointer; padding: 4px; border-radius: 4px; display: flex; align-items: center; justify-content: center; width: 24px; height: 24px; font-size: 12px; transition: all 0.2s; margin-left: auto;" onclick="deleteTodo(${index})" title="刪除" onmouseover="this.style.background='#ffcccc'" onmouseout="this.style.background='#ffe3e3'">❌</button>
                 </div>
             `).join('');
         }
@@ -2126,7 +2126,7 @@
                             ${item.note ? `<span>📝 ${item.note}</span>` : ''}
                         </div>
                     </div>
-                    <button class="btn btn-danger" onclick="deleteShopping(${index})">刪除</button>
+                    <button style="background: #ffe3e3; border: 1px solid #ffcccc; cursor: pointer; padding: 4px; border-radius: 4px; display: flex; align-items: center; justify-content: center; width: 24px; height: 24px; font-size: 12px; transition: all 0.2s; margin-left: auto;" onclick="deleteShopping(${index})" title="刪除" onmouseover="this.style.background='#ffcccc'" onmouseout="this.style.background='#ffe3e3'">❌</button>
                 </div>
             `).join('');
         }
