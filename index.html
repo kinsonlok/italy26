@@ -1,0 +1,2664 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🇮🇹 意大利2026旅行規劃</title>
+    <style>
+        :root {
+            --color-primary: #0d7377;
+            --color-secondary: #14ffec;
+            --color-accent: #ff6b35;
+            --color-bg-light: #f8f9fa;
+            --color-bg-dark: #1a1a2e;
+            --color-text-light: #333;
+            --color-text-dark: #fff;
+            --color-border: #e0e0e0;
+            --color-success: #28a745;
+            --color-warning: #ffc107;
+            --color-danger: #dc3545;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: var(--color-text-light);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #0d7377 0%, #14ffec 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .header .subtitle {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .tab-nav {
+            display: flex;
+            background: #f8f9fa;
+            border-bottom: 2px solid var(--color-border);
+            overflow-x: auto;
+            flex-wrap: wrap;
+        }
+
+        .tab-nav button {
+            flex: 1;
+            min-width: 120px;
+            padding: 15px 20px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            color: #666;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+        }
+
+        .tab-nav button:hover {
+            background: rgba(13, 115, 119, 0.1);
+            color: var(--color-primary);
+        }
+
+        .tab-nav button.active {
+            color: var(--color-primary);
+            border-bottom-color: var(--color-primary);
+            background: white;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 30px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .day-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .day-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        .day-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .day-title {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        .day-city {
+            background: rgba(255,255,255,0.2);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+        }
+
+        .day-details {
+            display: none;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .day-details.show {
+            display: block;
+        }
+
+        .detail-section {
+            background: rgba(255,255,255,0.1);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .detail-section h4 {
+            margin-bottom: 10px;
+            font-size: 1.1em;
+            color: #fff;
+        }
+
+        .detail-section p, .detail-section li {
+            line-height: 1.8;
+            color: rgba(255,255,255,0.95);
+        }
+
+        .detail-section a {
+            color: #14ffec;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .detail-section a:hover {
+            text-decoration: underline;
+        }
+
+        .weather-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .weather-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .weather-card h3 {
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .weather-temp {
+            font-size: 3em;
+            font-weight: bold;
+            margin: 15px 0;
+        }
+
+        .weather-info {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+            font-size: 0.9em;
+        }
+
+          .expense-item {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap; /* 允許空間不夠時換行 */
+            gap: 10px; /* 增加各區塊間距 */
+        }
+        
+        .expense-info {
+            flex: 1;
+            min-width: 150px; /* 確保左側資訊有足夠寬度不會被擠扁 */
+        }
+        
+        .expense-amount {
+            font-size: 1.2em; /* 從 1.5em 縮小為 1.2em */
+            font-weight: bold;
+            color: var(--color-primary);
+            margin-right: 10px;
+            text-align: right;
+        }
+        
+        /* 讓按鈕在小螢幕時也能維持好按的大小 */
+        .expense-item .btn-danger {
+            padding: 8px 12px;
+            font-size: 0.9em;
+        }
+
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .form-group input, .form-group select, .form-group textarea {
+            padding: 10px;
+            border: 2px solid var(--color-border);
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: var(--color-primary);
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: var(--color-primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #0a5a5d;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(13, 115, 119, 0.3);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+
+        .btn-danger {
+            background: var(--color-danger);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #c82333;
+        }
+
+        .expense-list {
+            margin-top: 25px;
+        }
+
+        .expense-item {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .expense-info {
+            flex: 1;
+        }
+
+        .expense-amount {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: var(--color-primary);
+            margin-right: 20px;
+        }
+
+        .expense-summary {
+            background: linear-gradient(135deg, #0d7377 0%, #14ffec 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .expense-summary h3 {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .todo-list, .shopping-list {
+            display: grid;
+            gap: 15px;
+        }
+
+        .todo-item, .shopping-item {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .todo-item:hover, .shopping-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .todo-item.completed {
+            opacity: 0.6;
+            text-decoration: line-through;
+        }
+
+        .todo-checkbox {
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+        }
+
+        .restaurant-card {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .restaurant-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        .restaurant-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 15px;
+        }
+
+        .restaurant-name {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: var(--color-primary);
+            margin-bottom: 5px;
+        }
+
+        .restaurant-links {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        .link-btn {
+            padding: 8px 15px;
+            background: var(--color-primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+        }
+
+        .link-btn:hover {
+            background: #0a5a5d;
+            transform: scale(1.05);
+        }
+
+        .transport-section {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .transport-section h3 {
+            color: var(--color-primary);
+            margin-bottom: 15px;
+            font-size: 1.4em;
+        }
+
+        .metro-map {
+            width: 100%;
+            border-radius: 10px;
+            margin-top: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .notes-editor {
+            width: 100%;
+            min-height: 300px;
+            padding: 20px;
+            border: 2px solid var(--color-border);
+            border-radius: 10px;
+            font-size: 16px;
+            font-family: inherit;
+            resize: vertical;
+        }
+
+        .notes-editor:focus {
+            outline: none;
+            border-color: var(--color-primary);
+        }
+
+        .swipe-container {
+            position: relative;
+            overflow: hidden;
+            touch-action: pan-y;
+        }
+
+        .currency-display {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .attraction-item {
+            background: rgba(255,255,255,0.15);
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .attraction-item a {
+            color: #14ffec;
+            text-decoration: none;
+            font-weight: 500;
+            margin-left: 5px;
+        }
+
+        .nav-arrow {
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 50px;
+            height: 50px;
+            background: rgba(13, 115, 119, 0.8);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 24px;
+            cursor: pointer;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .nav-arrow:hover {
+            background: rgba(13, 115, 119, 1);
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .nav-arrow.left {
+            left: 20px;
+        }
+
+        .nav-arrow.right {
+            right: 20px;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .tab-nav button {
+                min-width: 100px;
+                padding: 12px 15px;
+                font-size: 14px;
+            }
+
+            .tab-content {
+                padding: 20px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-arrow {
+                width: 40px;
+                height: 40px;
+                font-size: 20px;
+            }
+
+            .nav-arrow.left {
+                left: 10px;
+            }
+
+            .nav-arrow.right {
+                right: 10px;
+            }
+        }
+
+        .last-updated {
+            font-size: 0.85em;
+            color: rgba(255,255,255,0.7);
+            margin-top: 10px;
+            font-style: italic;
+        }
+
+        .flight-status {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .flight-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .flight-detail {
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 4px solid var(--color-primary);
+        }
+
+        .flight-detail strong {
+            color: var(--color-primary);
+            display: block;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <button class="nav-arrow left" onclick="navigateTabs(-1)">‹</button>
+    <button class="nav-arrow right" onclick="navigateTabs(1)">›</button>
+
+    <div class="container swipe-container">
+        <div class="header">
+            <h1>🇮🇹 意大利2026旅行規劃</h1>
+            <div class="subtitle">19-29 May 2026 </div>
+	<div class="subtitle">羅馬 → 佛羅倫斯 → 米蘭</div>
+        </div>
+
+        <div class="tab-nav">
+            <button class="tab-btn active" data-tab="itinerary">📅 行程表</button>
+            <button class="tab-btn" data-tab="weather">🌤️ 天氣</button>
+            <button class="tab-btn" data-tab="expenses">💰 記帳</button>
+            <button class="tab-btn" data-tab="restaurants">🍝 餐廳</button>
+            <button class="tab-btn" data-tab="todo">✅ To-Do</button>
+            <button class="tab-btn" data-tab="shopping">🛍️ 購物</button>
+            <button class="tab-btn" data-tab="transport">🚇 交通</button>
+            <button class="tab-btn" data-tab="notes">📝 記事本</button>
+                    <button class="tab-btn" data-tab="timezone">⏰ 時差計算</button>
+            <button class="tab-btn" data-tab="settings">⚙️ 資料管理</button>
+        </div>
+
+        <div id="itinerary" class="tab-content active">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 25px;">
+                <h2 style="color: var(--color-primary); margin:0;">📅 11天意大利詳細行程</h2>
+                <div style="display:flex; gap:10px;">
+                    <button id="editItineraryBtn" class="btn btn-secondary" onclick="toggleEditItinerary()" style="padding: 8px 15px; font-size: 0.9em;">✏️ 編輯行程</button>
+                    <button id="resetItineraryBtn" class="btn btn-danger" onclick="resetItineraryToDefault()" style="display:none; padding: 8px 15px; font-size: 0.9em;">🔄 恢復預設</button>
+                </div>
+            </div>
+
+            <div id="itineraryContainer">
+            
+            <div class="day-card" onclick="toggleDay(1)">
+                <div class="day-header">
+                    <div class="day-title">Day 1 - 5月19日 (二)</div>
+                    <div class="day-city">🏛️ 羅馬</div>
+                </div>
+                <div>✈️ 航班抵達 | 特雷維噴泉 | 西班牙階梯</div>
+                <div class="day-details" id="day1">
+                    <div class="detail-section">
+                        <h4>🏨 住宿</h4>
+                        <p><strong>羅馬 Re di Roma 附近</strong></p>
+                        <p>地址: Via Urbino, 51</p>
+                        <a href="https://www.google.com/maps/search/?api=1&query=Via+Urbino+51+Rome" target="_blank" class="link-btn">🗺️ 導航</a>
+                    </div>
+                    <div class="detail-section">
+                        <h4>✈️ 航班資訊</h4>
+                        <p><strong>QR815:</strong> 00:55 香港 → 04:05 多哈</p>
+                        <p><strong>QR131:</strong> 09:15 多哈 → 14:15 羅馬FCO</p>
+                    </div>
+                    <div class="detail-section">
+                        <h4>📍 景點行程</h4>
+                        <div class="attraction-item">
+                            <strong>17:00</strong> 漫步適應時差 Check-in 後輕鬆遊覽
+                        </div>
+                        <div class="attraction-item">
+                            1. 特雷維噴泉 (Trevi Fountain) 扔硬幣許願
+                            <a href="https://www.google.com/maps/search/?api=1&query=Trevi+Fountain+Rome" target="_blank">🗺️ 導航</a>
+                            <a href="https://www.bring-you.info/zh-tw/piazza-di-spagna-rome" target="_blank">ℹ️ 攻略</a>
+                        </div>
+                        <div class="attraction-item">
+                            2. 西班牙階梯購物區
+                            <a href="https://www.google.com/maps/search/?api=1&query=Spanish+Steps+Rome" target="_blank">🗺️ 導航</a>
+                        </div>
+                    </div>
+                    <div class="detail-section">
+                        <h4>🍝 餐廳推薦</h4>
+                        <p><strong>晚餐：Piccolo Buco</strong> (特雷維旁人氣 Pizza)</p>
+                        <a href="https://www.google.com/maps/search/?api=1&query=Piccolo+Buco+Rome" target="_blank" class="link-btn">🗺️ 導航</a>
+                        <a href="https://kimiyo.tw/piccolo-buco/" target="_blank" class="link-btn">ℹ️ 食評</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="day-card" onclick="toggleDay(2)">
+                <div class="day-header">
+                    <div class="day-title">Day 2 - 5月20日 (三)</div>
+                    <div class="day-city">🏛️ 羅馬</div>
+                </div>
+                <div>🏟️ 羅馬競技場 | 古羅馬廣場 | 萬神殿</div>
+                <div class="day-details" id="day2">
+                    <div class="detail-section">
+                        <h4>🏨 住宿</h4>
+                        <p>羅馬 (續住)</p>
+                        <p>💡 古蹟區路面多為石板路，請穿好走的鞋</p>
+                    </div>
+                    <div class="detail-section">
+                        <h4>🚇 交通</h4>
+                        <p>地鐵：B 線 Colosseo 站 或 步行前往</p>
+                    </div>
+                    <div class="detail-section">
+                        <h4>📍 景點行程</h4>
+                        <div class="attraction-item">
+                            <strong>09:00</strong> 古羅馬巡禮 (需預約)
+                        </div>
+                        <div class="attraction-item">
+                            - 羅馬競技場 (Colosseum) 入內參觀
+                            <a href="https://www.google.com/maps/search/?api=1&query=Colosseum+Rome" target="_blank">🗺️ 導航</a>
+                            <a href="https://monicaineurope.com/rome-colosseo-guides/" target="_blank">ℹ️ 攻略 </a>
+                        </div>
+                        <div class="attraction-item">
+                            - 古羅馬廣場 + 帕拉蒂諾山
+                            <a href="https://www.google.com/maps/search/?api=1&query=Roman+Forum+Rome" target="_blank">🗺️ 導航</a>
+                        </div>
+                        <div class="attraction-item">
+                            <strong>15:00</strong> 羅馬市內
+                        </div>
+                        <div class="attraction-item">
+                            - 萬神殿 + 金杯咖啡
+                            <a href="https://www.google.com/maps/search/?api=1&query=Pantheon+Rome" target="_blank">🗺️ 導航</a>
+                        </div>
+                        <div class="attraction-item">
+                            - 納沃納廣場 (Piazza Navona) 感受羅馬夜景
+                            <a href="https://www.google.com/maps/search/?api=1&query=Piazza+Navona+Rome" target="_blank">🗺️ 導航</a>
+                        </div>
+                    </div>
+                    <div class="detail-section">
+                        <h4>🍝 餐廳推薦</h4>
+                        <p><strong>午餐：</strong>競技場附近 Panini</p>
+                        <p><strong>晚餐：</strong>Il Chianti Vineria Pompi 提拉米蘇</p>
+                        <a href="https://monicaineurope.com/rome-pompi/" target="_blank" class="link-btn">ℹ️ 食評</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="day-card" onclick="toggleDay(3)">
+                <div class="day-header">
+                    <div class="day-title">Day 3 - 5月21日 (四)</div>
+                    <div class="day-city">⛪ 羅馬/梵蒂岡</div>
+                </div>
+                <div>⛪ 聖彼得大教堂 | 梵蒂岡博物館 | 聖天使城堡</div>
+                <div class="day-details" id="day3">
+                    <div class="detail-section">
+                        <h4>🏨 住宿</h4>
+                        <p>羅馬 (續住)</p>
+                        <p>💡 進教堂不可穿無袖背心/短褲</p>
+                    </div>
+                    <div class="detail-section">
+                        <h4>🚇 交通</h4>
+                        <p>地鐵：A 線 Ottaviano 站</p>
+                    </div>
+                    <div class="detail-section">
+                        <h4>📍 景點行程</h4>
+                        <div class="attraction-item">
+                            <strong>09:00</strong> 梵蒂岡聖地
+                        </div>
+                        <div class="attraction-item">
+                            - 聖彼得大教堂
+                            <a href="https://www.google.com/maps/search/?api=1&query=St+Peter+Basilica+Vatican" target="_blank">🗺️ 導航</a>
+                            <a href="https://monicaineurope.com/vatican-city-attractions-guide/" target="_blank">ℹ️ 攻略 </a>
+                        </div>
+                        <div class="attraction-item">
+                            <strong>15:00</strong> (已預約 必須準時)
+                        </div>
+                        <div class="attraction-item">
+                            - 梵蒂岡博物館 (西斯汀禮拜堂)
+                            <a href="https://www.google.com/maps/search/?api=1&query=Vatican+Museums" target="_blank">🗺️ 導航</a>
+                        </div>
+                        <div class="attraction-item">
+                            <strong>18:00</strong> 梵蒂岡其他景點
+                        </div>
+                        <div class="attraction-item">
+                            - 聖天使城堡 (視乎時間可於博物館前或後前往)
+                            <a href="https://www.google.com/maps/search/?api=1&query=Castel+Sant+Angelo+Rome" target="_blank">🗺️ 導航</a>
+                        </div>
+                    </div>
+                    <div class="detail-section">
+                        <h4>🍝 餐廳推薦</h4>
+                        <p><strong>午餐：</strong>Prati 區 Trecaffè</p>
+                        <p><strong>晚餐：</strong>Cantina e Cucina (納沃納廣場旁)</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="day-card" onclick="toggleDay(4)">
+                <div class="day-header">
+                    <div class="day-title">Day 4 - 5月22日 (五)</div>
+                    <div class="day-city">🏛️ 羅馬</div>
+                </div>
+                <div>🏛️ 威尼斯廣場 | 真理之口 | Trastevere區</div>
+                <div class="day-details" id="day4">
+                    <div class="detail-section">
+                        <h4>🏨 住宿</h4>
+                        <p>羅馬 (續住)</p>
+                    </div>
+                    <div class="detail-section">
+                        <h4>🚖 交通</h4>
+                        <p>的士 或 步行</p>
+                    </div>
+                    <div class="detail-section">
+                        <h4>📍 景點行程</h4>
+                        <div class="attraction-item">
+                            <strong>10:00</strong> 城市漫步
+                        </div>
+                        <div class="attraction-item">
+                            - 威尼斯廣場
+                            <a href="https://www.google.com/maps/search/?api=1&query=Piazza+Venezia+Rome" target="_blank">🗺️ 導航</a>
+                        </div>
+                        <div class="attraction-item">
+                            - 真理之口 / 鮮花廣場
+                            <a href="https://www.google.com/maps/search/?api=1&query=Mouth+of+Truth+Rome" target="_blank">🗺️ 導航</a>
+                        </div>
+                        <div class="attraction-item">
+                            - 傍晚漫步 Trastevere 區
+                            <a href="https://www.google.com/maps/search/?api=1&query=Trastevere+Rome" target="_blank">🗺️ 導航</a>
+                        </div>
+                        <div class="attraction-item">
+                            - 悠閒逛街買伴手禮
+                        </div>
+                    </div>
+                    <div class="detail-section">
+                        <h4>🍝 餐廳推薦</h4>
+                        <p><strong>午餐：</strong>Pane e Salame</p>
+                        <p><strong>晚餐：</strong>Da Enzo al 29 (Trastevere 必吃羅馬菜，務必預約)</p>
+                        <a href="https://www.google.com/maps/search/?api=1&query=Da+Enzo+al+29+Rome" target="_blank" class="link-btn">🗺️ 導航</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="day-card" onclick="toggleDay(5)">
+                <div class="day-header">
+                    <div class="day-title">Day 5 - 5月23日 (六)</div>
+                    <div class="day-city">🎨 佛羅倫斯</div>
+                </div>
+                <div>🚄 羅馬→佛羅倫斯 | 聖母百花大教堂 | 老橋</div>
+                <div class="day-details" id="day5">
+                    <div class="detail-section">
+                        <h4>🏨 住宿</h4>
+                        <p><strong>佛羅倫斯歷史中心</strong></p>
+                        <p>地址: Via dei Neri 33</p>
+                        <a href="https://www.google.com/maps/search/?api=1&query=Via+dei+Neri+33+Florence" target="_blank" class="link-btn">🗺️ 導航</a>
+                    </div>
+                    <div class="detail-section">
+                        <h4>🚅 交通</h4>
+                        <p><strong>Italo #9924</strong></p>
+                        <p>Roma Termini → Firenze S.M.N.</p>
+                        <p>10:40 → 12:17</p>
+                        <p>訂位號碼: Q9NQNL</p>
+                    </div>
+                    <div class="detail-section">
+                        <h4>📍 景點行程</h4>
+                        <div class="attraction-item">
+                            <strong>13:00</strong> 文藝復興之都
+                        </div>
+                        <div class="attraction-item">
+                            - Check-in 酒店
+                        </div>
+                        <div class="attraction-item">
+                            - 聖母百花大教堂 (Duomo) + 洗禮堂 (天堂之門)
+                            <a href="https://www.google.com/maps/search/?api=1&query=Florence+Cathedral" target="_blank">🗺️ 導航</a>
+                            <a href="https://vivianexplore.tw/the-10-best-things-to-do-in-florence/" target="_blank">ℹ️ 攻略</a>
+                        </div>
+                        <div class="attraction-item">
+                            - 領主廣場 + 老橋 (Ponte Vecchio) 散步
+                            <a href="https://www.google.com/maps/search/?api=1&query=Ponte+Vecchio+Florence" target="_blank">🗺️ 導航</a>
+                        </div>
+                    </div>
+                    <div class="detail-section">
+                        <h4>🍝 餐廳推薦</h4>
+                        <p><strong>午餐：</strong>Panini Toscani (大教堂旁)</p>
+                        <p><strong>晚餐：</strong>Il Latini 或 Trattoria Zà Zà (必點 1kg 大牛排)</p>
+                        <p>💡 牛排份量大，適合 4 人分享</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="day-card" onclick="toggleDay(6)">
+                <div class="day-header">
+                    <div class="day-title">Day 6 - 5月24日 (日)</div>
+                    <div class="day-city">🎨 佛羅倫斯</div>
+                </div>
+                <div>🖼️ 烏菲茲美術館 | 大衛像 | 米開朗基羅廣場</div>
+                <div class="day-details" id="day6">
+                    <div class="detail-section">
+                        <h4>🏨 住宿</h4>
+                        <p>佛羅倫斯 (續住)</p>
+                        <p>💡 大衛像與維納斯這天都看得到，請務必提前 1-2 個月官網訂票</p>
+                    </div>
+                    <div class="detail-section">
+                        <h4>🚶 交通</h4>
+                        <p>市內交通：全程步行</p>
+                    </div>
+                    <div class="detail-section">
+                        <h4>📍 景點行程</h4>
+                        <div class="attraction-item">
+                            <strong>10:00</strong> 烏菲茲美術館 (Uffizi)
+                            <a href="https://www.google.com/maps/search/?api=1&query=Uffizi+Gallery+Florence" target="_blank">🗺️ 導航</a>
+                        </div>
+                        <div class="attraction-item">
+                            ✨ 重點：維納斯的誕生
+                        </div>
+                        <div class="attraction-item">
+                            <strong>13:00</strong> 中央市場 (Mercato Centrale)
+                            <a href="https://www.google.com/maps/search/?api=1&query=Mercato+Centrale+Florence" target="_blank">🗺️ 導航</a>
+                            <a href="https://taste-of-milano.com/2018/08/10/mercato-centrale-firenze/" target="_blank">ℹ️ 攻略 </a>
+                        </div>
+                        <div class="attraction-item">
+                            逛皮件市場，二樓美食街吃早午餐
+                        </div>
+                        <div class="attraction-item">
+                            <strong>15:00</strong> 學院美術館 (Accademia)
+                            <a href="https://www.google.com/maps/search/?api=1&query=Galleria+Accademia+Florence" target="_blank">🗺️ 導航</a>
+                        </div>
+                        <div class="attraction-item">
+                            ✨ 重點：大衛像真跡 (David)
+                        </div>
+                        <div class="attraction-item">
+                            <strong>19:00</strong> 米開朗基羅廣場 看日落
+                            <a href="https://www.google.com/maps/search/?api=1&query=Piazzale+Michelangelo+Florence" target="_blank">🗺️ 導航</a>
+                        </div>
+                    </div>
+                    <div class="detail-section">
+                        <h4>🍝 餐廳推薦</h4>
+                        <p><strong>午餐：</strong>中央市場 Da Nerbone (牛肚包)</p>
+                        <p><strong>晚餐：</strong>Osteria Santo Spirito (河對岸，松露麵著名)</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="day-card" onclick="toggleDay(7)">
+                <div class="day-header">
+                    <div class="day-title">Day 7 - 5月25日 (一)</div>
+                    <div class="day-city">🏰 佛羅倫斯/西恩納</div>
+                </div>
+                <div>🚌 西恩納一日遊 或 佛羅倫斯市內</div>
+                <div class="day-details" id="day7">
+                    <div class="detail-section">
+                        <h4>🏨 住宿</h4>
+                        <p>佛羅倫斯 (續住)</p>
+                        <p>*活動按當天體力選擇*</p>
+                    </div>
+                    <div class="detail-section">
+                        <h4>🚌 交通</h4>
+                        <p><strong>Option 1:</strong> 巴士 (西恩納) 131R (70mins)</p>
+                        <p><strong>Option 2:</strong> 步行 (佛羅倫斯)</p>
+                    </div>
+                    <div class="detail-section">
+                        <h4>📍 景點行程</h4>
+                        <div class="attraction-item">
+                            <strong>Option 1: 西恩納 (Siena)</strong>
+                            <a href="https://www.bring-you.info/zh-tw/siena" target="_blank">ℹ️ 攻略 </a>
+                        </div>
+                        <div class="attraction-item">
+                            - 西恩納舊城區 + 薩林貝尼宮
+                            <a href="https://www.google.com/maps/search/?api=1&query=Siena+Historic+Center" target="_blank">🗺️ 導航</a>
+                        </div>
+                        <div class="attraction-item">
+                            - 田野廣場 + 主教座堂 (Duomo di Siena)
+                            <a href="https://www.google.com/maps/search/?api=1&query=Piazza+del+Campo+Siena" target="_blank">🗺️ 導航</a>
+                        </div>
+                        <div class="attraction-item">
+                            <strong>Option 2: 佛羅倫斯市內</strong>
+                        </div>
+                        <div class="attraction-item">
+                            - 彼提宮 (Pitti Palace), 波波里花園 (Boboli Gardens)
+                            <a href="https://www.google.com/maps/search/?api=1&query=Pitti+Palace+Florence" target="_blank">🗺️ 導航</a>
+                        </div>
+                    </div>
+                    <div class="detail-section">
+                        <h4>🍝 餐廳推薦</h4>
+                        <p><strong>西恩納：</strong>Osteria Le Logge</p>
+                        <p><strong>佛羅倫斯：</strong>Trattoria Sostanza</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="day-card" onclick="toggleDay(8)">
+                <div class="day-header">
+                    <div class="day-title">Day 8 - 5月26日 (二)</div>
+                    <div class="day-city">🗼 比薩 & 五漁村</div>
+                </div>
+                <div>🗼 比薩斜塔 | 🏘️ Vernazza | Manarola</div>
+                <div class="day-details" id="day8">
+                    <div class="detail-section">
+                        <h4>🏨 住宿</h4>
+                        <p>佛羅倫斯 (續住)</p>
+                    </div>
+                    <div class="detail-section">
+                        <h4>🚞 交通</h4>
+                        <p><strong>國鐵 Trenitalia</strong></p>
+                        <p>Firenze SMN → Pisa S. Rossore: 07:53 → 09:13</p>
+                        <p>Pisa S. Rossore → La Spezia Centrale: 11:12 → 12:40</p>
+                        <p>La Spezia Centrale ↔ Levante (途經五漁村各村)</p>
+                        <p>La Spezia Centrale → Firenze SMN: 18:40 → 21:08</p>
+                        <a href="https://www.trenitalia.com" target="_blank" class="link-btn">🚆 訂票網站</a>
+                    </div>
+                    <div class="detail-section">
+                        <h4>📍 景點行程</h4>
+                        <div class="attraction-item">
+                            <strong>10:00</strong> 步行往比薩斜塔遊覽打卡 (1hr)
+                            <a href="https://www.google.com/maps/search/?api=1&query=Leaning+Tower+Pisa" target="_blank">🗺️ 導航</a>
+                            <a href="http://xhslink.com/o/45dritMz2fC" target="_blank">ℹ️ 攻略 </a>
+                        </div>
+                        <div class="attraction-item">
+                            <strong>13:30</strong> 遊覽 Vernazza (四村) + 午餐
+                            <a href="https://www.google.com/maps/search/?api=1&query=Vernazza+Cinque+Terre" target="_blank">🗺️ 導航</a>
+                        </div>
+                        <div class="attraction-item">
+                            <strong>16:00</strong> 遊覽 Manarola (二村)
+                            <a href="https://www.google.com/maps/search/?api=1&query=Manarola+Cinque+Terre" target="_blank">🗺️ 導航</a>
+                        </div>
+                        <div class="attraction-item">
+                            <strong>17:00</strong> 遊覽 Riomaggiore (一村 - Optional)
+                            <a href="https://www.google.com/maps/search/?api=1&query=Riomaggiore+Cinque+Terre" target="_blank">🗺️ 導航</a>
+                        </div>
+                        <div class="attraction-item">
+                            <strong>21:30</strong> 返回佛羅倫斯 + 晚餐
+                        </div>
+                    </div>
+                    <div class="detail-section">
+                        <h4>🍝 餐廳推薦</h4>
+                        <p><strong>午餐：</strong>五漁村</p>
+                        <p><strong>晚餐：</strong>佛羅倫斯</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="day-card" onclick="toggleDay(9)">
+                <div class="day-header">
+                    <div class="day-title">Day 9 - 5月27日 (三)</div>
+                    <div class="day-city">🏙️ 米蘭</div>
+                </div>
+                <div>🚄 佛羅倫斯→米蘭 | 🛍️ Serravalle Outlet</div>
+                <div class="day-details" id="day9">
+                    <div class="detail-section">
+                        <h4>🏨 住宿</h4>
+                        <p><strong>米蘭中央車站附近</strong></p>
+                        <p>地址: Via Copernico, 10</p>
+                        <p>⚠️ 到達米蘭後在Airbnb寄放行李</p>
+                        <a href="https://www.google.com/maps/search/?api=1&query=Via+Copernico+10+Milan" target="_blank" class="link-btn">🗺️ 導航</a>
+                    </div>
+                    <div class="detail-section">
+                        <h4>🚄 交通</h4>
+                        <p><strong>Italo #9908</strong></p>
+                        <p>Firenze S.M.N. → Milano Centrale</p>
+                        <p>08:25 → 10:20</p>
+                        <p>訂位號碼: FDM87J</p>
+                        <p><strong>Outlet 交通：</strong></p>
+                        <p>🚌 13:00 Milan → Serravalle (巴士)</p>
+                    </div>
+                    <div class="detail-section">
+                        <h4>📍 景點行程</h4>
+                        <div class="attraction-item">
+                            <strong>14:00-20:00</strong> Serravalle Designer Outlet
+                            <a href="https://www.google.com/maps/search/?api=1&query=Serravalle+Designer+Outlet" target="_blank">🗺️ 導航</a>
+                            <a href="https://www.bring-you.info/zh-tw/serravalle-designer-outlet" target="_blank">ℹ️ 攻略 </a>
+                        </div>
+                        <div class="attraction-item">
+                            歐洲最大名牌 Outlet掃貨 (Gucci, Prada, Burberry 等)
+                        </div>
+                        <div class="attraction-item">
+                            <strong>Or</strong> 市內購物，如DMAG Outlet, 文藝復興百貨 (Rinascente Milano), 蒙特拿破崙大街 (Via Montenapoleone)
+                        </div>
+                    </div>
+                    <div class="detail-section">
+                        <h4>🍝 餐廳推薦</h4>
+                        <p><strong>午餐：</strong>Outlet 內餐廳</p>
+                        <p><strong>晚餐：</strong>Ristorante Galleria (牛膝燉飯)</p>
+                        <a href="https://www.bring-you.info/zh-tw/ristorante-galleria" target="_blank" class="link-btn">ℹ️ 食評</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="day-card" onclick="toggleDay(10)">
+                <div class="day-header">
+                    <div class="day-title">Day 10 - 5月28日 (四)</div>
+                    <div class="day-city">🏔️ 科莫湖</div>
+                </div>
+                <div>🏔️ Varenna | ⛵ Bellagio</div>
+                <div class="day-details" id="day10">
+                    <div class="detail-section">
+                        <h4>🏨 住宿</h4>
+                        <p>米蘭 (續住)</p>
+                        <p>💡 回程火車票建議事先買好，以免沒位子</p>
+                        <p>⚠️ 若遇天氣差便取消 (留在米蘭)</p>
+                    </div>
+                    <div class="detail-section">
+                        <h4>🚆 交通</h4>
+                        <p><strong>火車一日遊</strong></p>
+                        <p>Milan Centrale ↔ Varenna Esino (約1h)</p>
+                        <p>⛴️ Varenna ↔ Bellagio (渡輪)</p>
+                    </div>
+                    <div class="detail-section">
+                        <h4>📍 景點行程</h4>
+                        <div class="attraction-item">
+                            <strong>10:00</strong> 湖光山色 Varenna
+                            <a href="https://www.google.com/maps/search/?api=1&query=Varenna+Lake+Como" target="_blank">🗺️ 導航</a>
+                            <a href="https://www.bring-you.info/zh-tw/como-lake-travel-guide" target="_blank">ℹ️ 攻略 </a>
+                        </div>
+                        <div class="attraction-item">
+                            走情人步道，參觀 Villa Monastero 花園
+                        </div>
+                        <div class="attraction-item">
+                            <strong>13:00</strong> 搭渡輪至 Bellagio
+                            <a href="https://www.google.com/maps/search/?api=1&query=Bellagio+Lake+Como" target="_blank">🗺️ 導航</a>
+                        </div>
+                        <div class="attraction-item">
+                            「科莫湖明珠」，逛蜿蜒小巷與工藝品店
+                        </div>
+                        <div class="attraction-item">
+                            <strong>17:00</strong> 搭火車回米蘭
+                        </div>
+                    </div>
+                    <div class="detail-section">
+                        <h4>🍝 餐廳推薦</h4>
+                        <p><strong>午餐：</strong>湖畔景觀餐廳 (如 Bar Il Molo)</p>
+                        <p><strong>晚餐：</strong>Ristorante Bice Milano</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="day-card" onclick="toggleDay(11)">
+                <div class="day-header">
+                    <div class="day-title">Day 11 - 5月29日 (五)</div>
+                    <div class="day-city">🏙️ 米蘭 → ✈️ 返港</div>
+                </div>
+                <div>⛪ 米蘭大教堂 | 艾曼紐二世迴廊 | ✈️ 返港</div>
+                <div class="day-details" id="day11">
+                    <div class="detail-section">
+                        <h4>🏨 住宿</h4>
+                        <p>機上過夜</p>
+                        <p>⚠️ Check-out後在中央車站寄放行李</p>
+                    </div>
+                    <div class="detail-section">
+                        <h4>🚇 交通</h4>
+                        <p>Milan → MXP 機場 (Malpensa Express)</p>
+                    </div>
+                    <div class="detail-section">
+                        <h4>✈️ 航班資訊</h4>
+                        <p><strong>QR118:</strong> 23:00 米蘭 MXP → 05:45 多哈</p>
+                        <p><strong>QR816:</strong> 09:55 多哈 → 23:20 香港 HKG</p>
+                    </div>
+                    <div class="detail-section">
+                        <h4>📍 景點行程</h4>
+                        <div class="attraction-item">
+                            <strong>11:00</strong> 米蘭精華
+                        </div>
+                        <div class="attraction-item">
+                            - Check-in (寄放行李)
+                        </div>
+                        <div class="attraction-item">
+                            - 米蘭大教堂 (登頂)
+                            <a href="https://www.google.com/maps/search/?api=1&query=Milan+Cathedral" target="_blank">🗺️ 導航</a>
+                            <a href="https://mangofamily56.com/milan-attractions/" target="_blank">ℹ️ 攻略 </a>
+                        </div>
+                        <div class="attraction-item">
+                            - 艾曼紐二世迴廊
+                            <a href="https://www.google.com/maps/search/?api=1&query=Galleria+Vittorio+Emanuele+Milan" target="_blank">🗺️ 導航</a>
+                        </div>
+                        <div class="attraction-item">
+                            <strong>19:30</strong> 前往機場
+                        </div>
+                        <div class="attraction-item">
+                            - 抵達 Malpensa T1
+                        </div>
+                        <div class="attraction-item">
+                            - 辦理退稅、Check-in
+                        </div>
+                        <div class="attraction-item">
+                            ✈️ 航班：QR118 23:00 起飛
+                        </div>
+                    </div>
+                    <div class="detail-section">
+                        <h4>🍝 餐廳推薦</h4>
+                        <p><strong>早午餐：</strong>Luini (炸餡餅) + Spontini (厚 Pizza)</p>
+                        <p>💡 Luini 炸餅需排隊，建議錯開用餐高峰</p>
+                        <a href="https://mangofamily56.com/panzerotti-luini/" target="_blank" class="link-btn">ℹ️ 食評</a>
+                        <p><strong>晚餐：</strong>機場或輕食</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+
+        <div id="weather" class="tab-content">
+            <h2 style="color: var(--color-primary); margin-bottom: 25px;">🌤️ 天氣預報</h2>
+            
+            <div style="margin-bottom: 20px;">
+                <label style="font-weight: 500; margin-right: 10px;">選擇城市:</label>
+                <select id="citySelect" onchange="updateWeatherByCity()" style="padding: 8px 15px; border: 2px solid var(--color-border); border-radius: 8px; font-size: 16px;">
+                    <option value="羅馬">🏛️ 羅馬 (Roma)</option>
+                    <option value="佛羅倫斯">🎨 佛羅倫斯 (Firenze)</option>
+                    <option value="米蘭">🏙️ 米蘭 (Milano)</option>
+                </select>
+            </div>
+            
+            <div class="weather-container">
+                <div class="weather-card">
+                    <h3>☀️ 現時天氣</h3>
+                    <div class="weather-temp">--°C</div>
+                    <div style="font-size: 1.2em; margin: 10px 0;">載入中...</div>
+                    <div class="weather-info">
+                        <div>💧 濕度: --%</div>
+                        <div>💨 風速: -- km/h</div>
+                    </div>
+                    <div class="last-updated">最後更新: --</div>
+                </div>
+            </div>
+
+            <h3 style="margin: 40px 0 20px 0; color: var(--color-primary);">📅 未來5天天氣預報</h3>
+            <div class="weather-container" id="forecastContainer">
+                <div class="weather-card">
+                    <h3>明天 (3月4日)</h3>
+                    <div class="weather-temp">--°C</div>
+                    <div style="font-size: 1.2em; margin: 10px 0;">載入中...</div>
+                    <div class="weather-info">
+                        <div>💧 濕度: --%</div>
+                        <div>💨 風速: -- km/h</div>
+                    </div>
+                </div>
+                <div class="weather-card">
+                    <h3>3月5日</h3>
+                    <div class="weather-temp">--°C</div>
+                    <div style="font-size: 1.2em; margin: 10px 0;">載入中...</div>
+                    <div class="weather-info">
+                        <div>💧 濕度: --%</div>
+                        <div>💨 風速: -- km/h</div>
+                    </div>
+                </div>
+            </div>
+            <p style="margin-top: 20px; color: #666; font-size: 0.9em;">💡 提示：天氣數據為意大利主要城市預報 (羅馬/佛羅倫斯/米蘭)</p>
+        </div>
+
+        <div id="expenses" class="tab-content">
+            <h2 style="color: var(--color-primary); margin-bottom: 25px;">💰 旅行記帳</h2>
+            
+            <div class="expense-summary">
+                <h3>總支出</h3>
+                <div style="font-size: 2.5em; margin: 10px 0;" id="totalExpense">HKD $0</div>
+                <div style="font-size: 1.2em;" id="totalExpenseEur">EUR €0</div>
+                <div style="font-size: 0.9em; margin-top: 10px;">匯率: 1 EUR = <span id="exchangeRate">9.2</span> HKD</div>
+                <div style="font-size: 1.1em; margin-top: 15px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.3);" id="perPersonExpense">
+                    人均支出: HKD $0 (EUR €0)
+                </div>
+                <div id="perPayerPaid" style="font-size: 0.95em; margin-top: 10px;"></div>
+            </div>
+
+            <div class="expense-form">
+                <h3 style="margin-bottom: 20px;">新增支出</h3>
+                <div style="margin-bottom: 20px; padding: 15px; background: white; border-radius: 10px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;">
+                        <div>
+                            <div style="font-weight:600; margin-bottom:6px; color: #333;">旅行人名單</div>
+                            <div style="color:#666; font-size:0.95em;">總人數: <span id="travelersCountText">1</span> 人</div>
+                        </div>
+                        <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+                            <input type="text" id="travelerNameInput" placeholder="輸入名字" style="padding:8px 12px; border:2px solid var(--color-border); border-radius:8px; font-size:16px; width:120px;">
+                            <button class="btn btn-secondary" type="button" onclick="addTraveler()" style="padding:8px 12px;">➕ 加人</button>
+                        </div>
+                    </div>
+                    <div id="travelersChips" style="margin-top:12px; display:flex; gap:8px; flex-wrap:wrap;"></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>日期</label>
+                        <input type="date" id="expenseDate" value="2026-05-19">
+                    </div>
+                    <div class="form-group">
+                        <label>類別</label>
+                        <select id="expenseCategory">
+                            <option value="餐飲">🍝 餐飲</option>
+                            <option value="交通">🚇 交通</option>
+                            <option value="住宿">🏨 住宿</option>
+                            <option value="門票">🎫 門票</option>
+                            <option value="購物">🛍️ 購物</option>
+                            <option value="其他">💳 其他</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>幣種</label>
+                        <select id="expenseCurrency">
+                            <option value="HKD">HKD (港元)</option>
+                            <option value="EUR" selected>EUR (歐元)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>付款人</label>
+                        <select id="expensePayer"></select>
+                    </div>
+                    <div class="form-group">
+                        <label>金額</label>
+                        <input type="number" id="expenseAmount" placeholder="0.00" step="0.01">
+                    </div>
+                </div>
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label>備註</label>
+                    <input type="text" id="expenseNote" placeholder="例如：午餐、地鐵票、紀念品">
+                </div>
+                <button class="btn btn-primary" onclick="addExpense()">➕ 新增支出</button>
+            </div>
+
+            <div class="expense-list" id="expenseList"></div>
+        </div>
+
+        <div id="restaurants" class="tab-content">
+            <h2 style="color: var(--color-primary); margin-bottom: 25px;">🍝 餐廳推薦</h2>
+            
+            <div class="expense-form">
+                <h3 style="margin-bottom: 20px;">新增餐廳</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>餐廳名稱</label>
+                        <input type="text" id="restaurantName" placeholder="例如：Piccolo Buco">
+                    </div>
+                    <div class="form-group">
+                        <label>城市</label>
+                        <select id="restaurantCity">
+                            <option value="羅馬">羅馬</option>
+                            <option value="佛羅倫斯">佛羅倫斯</option>
+                            <option value="米蘭">米蘭</option>
+                            <option value="其他">其他</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group" style="margin-bottom: 15px;">
+                    <label>餐廳地址</label>
+                    <input type="text" id="restaurantAddress" placeholder="例如：Via di Pietra, 74, 00186 Roma">
+                </div>
+                <div class="form-row" style="margin-bottom: 15px;">
+                    <div class="form-group">
+                        <label>訂位網址 (選填)</label>
+                        <input type="url" id="restaurantBooking" placeholder="https://...">
+                    </div>
+                    <div class="form-group">
+                        <label>食評網址 (選填)</label>
+                        <input type="url" id="restaurantReview" placeholder="https://...">
+                    </div>
+                </div>
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label>備註</label>
+                    <textarea id="restaurantNote" rows="2" placeholder="例如：必點黃色披薩、需提前預約"></textarea>
+                </div>
+                <button class="btn btn-primary" onclick="addRestaurant()">➕ 新增餐廳</button>
+            </div>
+
+            <div id="restaurantList" style="margin-top: 30px;"></div>
+        </div>
+
+        <div id="todo" class="tab-content">
+            <h2 style="color: var(--color-primary); margin-bottom: 25px;">✅ 必做事情提醒</h2>
+            
+            <div class="expense-form">
+                <h3 style="margin-bottom: 20px;">新增待辦事項</h3>
+                <div class="form-row">
+                    <div class="form-group" style="flex: 3;">
+                        <label>事項內容</label>
+                        <input type="text" id="todoText" placeholder="例如：預約梵蒂岡博物館門票">
+                    </div>
+                    <div class="form-group">
+                        <label>優先度</label>
+                        <select id="todoPriority">
+                            <option value="高">🔴 高</option>
+                            <option value="中" selected>🟡 中</option>
+                            <option value="低">🟢 低</option>
+                        </select>
+                    </div>
+                </div>
+                <button class="btn btn-primary" onclick="addTodo()">➕ 新增事項</button>
+            </div>
+
+            <div class="todo-list" id="todoList"></div>
+        </div>
+
+        <div id="shopping" class="tab-content">
+            <h2 style="color: var(--color-primary); margin-bottom: 25px;">🛍️ 必買物品清單</h2>
+            
+            <div class="expense-form">
+                <h3 style="margin-bottom: 20px;">新增必買物品</h3>
+                <div class="form-row">
+                    <div class="form-group" style="flex: 2;">
+                        <label>物品名稱</label>
+                        <input type="text" id="shoppingItem" placeholder="例如：Gucci手袋">
+                    </div>
+                    <div class="form-group">
+                        <label>類別</label>
+                        <select id="shoppingCategory">
+                            <option value="精品">👜 精品</option>
+                            <option value="服飾">👗 服飾</option>
+                            <option value="食品">🍫 食品</option>
+                            <option value="紀念品">🎁 紀念品</option>
+                            <option value="其他">📦 其他</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>預算 (選填)</label>
+                        <input type="text" id="shoppingBudget" placeholder="EUR €500">
+                    </div>
+                </div>
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label>備註</label>
+                    <input type="text" id="shoppingNote" placeholder="例如：Serravalle Outlet、顏色偏好">
+                </div>
+                <button class="btn btn-primary" onclick="addShoppingItem()">➕ 新增物品</button>
+            </div>
+
+            <div class="shopping-list" id="shoppingList"></div>
+        </div>
+
+        <div id="transport" class="tab-content">
+            <h2 style="color: var(--color-primary); margin-bottom: 25px;">🚇 交通資訊</h2>
+            
+            <div class="flight-status">
+                <h3 style="color: var(--color-primary); margin-bottom: 15px;">✈️ 航班資訊</h3>
+                <a href="https://www.qatarairways.com" target="_blank" class="btn btn-primary" style="margin-bottom: 20px;">Qatar Airways 官網</a>
+                <p> <details style="cursor: pointer; color: #ff6b35;">
+        <summary>查看訂位代碼</summary>
+        <span style="color: #333;">你的訂位代碼是：88TRTJ</span></details></p>
+                <div class="flight-info">
+                    <div class="flight-detail">
+                        <strong>去程 - QR815 + QR131</strong>
+                        <p>5月19日 00:55 香港 → 14:15 羅馬</p>
+                        <p>經多哈轉機</p>
+                    </div>
+                    <div class="flight-detail">
+                        <strong>回程 - QR118 + QR816</strong>
+                        <p>5月29日 23:00 米蘭 → 5月30日 23:20 香港</p>
+                        <p>經多哈轉機</p>
+                    </div>
+                </div>
+                <p style="margin-top: 15px; color: #666; font-size: 0.9em;">💡 建議出發前24小時再次確認航班狀態</p>
+            </div>
+
+            <div class="transport-section">
+                <h3>🚄 高鐵訂票</h3>
+                <div style="display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 20px;">
+                    <a href="https://www.italotreno.it" target="_blank" class="btn btn-primary">Italo 高鐵官網</a>
+                    <a href="https://www.trenitalia.com" target="_blank" class="btn btn-primary">Trenitalia 國鐵官網</a>
+                </div>
+                
+                <h4 style="margin: 20px 0 10px 0;">已預訂車票</h4>
+              <div class="flight-info">
+                    <div class="flight-detail">
+                      <p>  <strong>5月23日</strong> - Italo #9924</p>
+                        <p> Roma Termini → Firenze S.M.N. </p>
+                        <p> 10:40 → 12:17 </p>
+<p> <details style="cursor: pointer; color: #ff6b35;">
+        <summary>查看訂位代碼</summary>
+        <span style="color: #333;">你的訂位代碼是：Q9NQNL</span>
+    </details> </p>
+
+                    </div>
+                    <div class="flight-detail">
+                      <p>  <strong> 5月27日 </strong> - Italo #9908 </p>
+                        <p> Firenze S.M.N. → Milano Centrale </p>
+<p> 08:25 → 10:20 </p>
+                        <p> <details style="cursor: pointer; color: #ff6b35;">
+        <summary>查看訂位代碼</summary>
+        <span style="color: #333;">你的訂位代碼是：FDM87J</span>
+    </details> </p>
+
+
+                </div>
+                </div>
+            </div>
+
+            <div class="transport-section">
+                <h3>🚇 羅馬地鐵路線</h3>
+                <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; line-height: 1.8;">
+                    <p style="margin-bottom: 15px;"><strong style="color: #ff6b35;">A線 (橙線):</strong> Battistini ↔ Anagnina</p>
+
+<p style="margin-left: 20px; color: #666;">路線：Battistini → … → Ottaviano（梵蒂岡、聖彼得大教堂） → Lepanto（聖天使堡） → Flaminio（人民廣場） → Spagna（西班牙階梯） → Barberini（特雷維噴泉） → Repubblica → Termini（中央車站，可轉乘B線） → Vittorio Emanuele → Manzoni → San Giovanni（可轉乘C線） → … → Anagnina </p>
+
+<br>
+
+                    <p style="margin-left: 20px; color: #666;"><strong>重要站點: Ottaviano (梵蒂岡)、Spagna (西班牙階梯)、Termini (中央車站) </strong> </p>
+                    
+                    <p style="margin: 15px 0;"><strong style="color: #0d7377;">B線 (藍線):</strong> Rebibbia/Jonio ↔ Laurentina/EUR Fermi</p>
+
+<p style="margin-left: 20px; color: #666;">路線：Laurentina → … → EUR Palasport → … → Basilica San Paolo → Garbatella → Piramide（真理之口） → Circo Massimo（帕拉丁山丘） → Colosseo（羅馬競技場、古羅馬廣場） → Cavour → Termini（中央車站，可轉乘A線） → Castro Pretorio → Policlinico → Bologna </p>
+
+<br>
+
+                    <p style="margin-left: 20px; color: #666;"><strong>重要站點: Colosseo (競技場)、Termini (中央車站)、Piramide </strong> </p>
+                    
+                    <p style="margin: 15px 0;"><strong style="color: #28a745;">C線 (綠線):</strong> Pantano ↔ San Giovanni</p>
+                    <p style="margin-left: 20px; color: #666;"><strong>較新路線，連接郊區</strong></p>
+                    
+                    <p style="margin-top: 20px; padding: 15px; background: white; border-radius: 8px; border-left: 4px solid var(--color-primary);">
+                        💡 <strong>提示:</strong> 主要使用 A線 (Ottaviano站-梵蒂岡) 和 B線 (Colosseo站-競技場)。兩線在 Termini 站交匯。
+                    </p>
+                </div>
+            </div>
+
+            <div class="transport-section">
+                <h3>🚇 米蘭地鐵路線</h3>
+                <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; line-height: 1.8;">
+                    <p style="margin-bottom: 15px;"><strong style="color: #dc3545;">M1線 (紅線):</strong> Sesto FS/Rho Fiera ↔ Bisceglie/Sesto 1° Maggio</p>
+
+		 <p style="margin-left: 20px; color: #666;">路線：Sesto FS → Sesto Rondo’ ... → Pasteur → Loreto → Lima → Palestro → San Babila → Duomo（米蘭大教堂） → Cordusio → Cairoli → Cadorna ... → Rho Fiera </p>
+<br>
+                    <p style="margin-left: 20px; color: #666;"><strong>重要站點: Duomo (大教堂)、Cairoli (城堡)、Conciliazione </strong></p>
+                    
+                    <p style="margin: 15px 0;"><strong style="color: #28a745;">M2線 (綠線):</strong> Abbiategrasso/Assago ↔ Cologno Nord/Gessate</p>
+
+                    <p style="margin-left: 20px; color: #666;"><strong>重要站點: Centrale FS (中央車站)、Cadorna (火車站)、Porta Genova </strong> </p>
+                    
+                    <p style="margin: 15px 0;"><strong style="color: #ffc107;">M3線 (黃線):</strong> San Donato ↔ Comasina</p>
+
+ <p style="margin-left: 20px; color: #666;">路線：Comasina → ... Maciachini → Zara → Sondrio → Centrale FS（米蘭中央車站） → Repubblica → Turati → Montenapoleone → Duomo（米蘭大教堂） → Missori → Crocetta → P.ta Romana → Lodi TIBB → ... San Donato </p>
+
+<br>
+
+                    <p style="margin-left: 20px; color: #666;"><strong>重要站點: Duomo (大教堂)、Montenapoleone (購物區) </strong> </p>
+                    
+                    <p style="margin: 15px 0;"><strong style="color: #764ba2;">M5線 (紫線):</strong> Bignami ↔ San Siro Stadio</p>
+                    <p style="margin-left: 20px; color: #666;"><strong>連接市中心與聖西羅球場</strong> </p>
+                    
+                    <p style="margin-top: 20px; padding: 15px; background: white; border-radius: 8px; border-left: 4px solid var(--color-primary);">
+                        💡 <strong>提示:</strong> 主要使用 M1線 (紅線) 和 M3線 (黃線)。Duomo 站是多線交匯的核心站。
+                    </p>
+                </div>
+            </div>
+
+            <div class="transport-section">
+                <h3>🚋 佛羅倫斯電車路線</h3>
+                <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; line-height: 1.8;">
+                    <p style="margin-bottom: 15px;"><strong style="color: #dc3545;">T1線:</strong> Villa Costanza ↔ Careggi</p>
+
+<p style="margin-left: 20px; color: #666;">路線：Villa Costanza（西南端起點） → … → De André → … → Cascine → … → Porta al Prato-Leopolda → Alamanni-Stazione（新聖母大殿火車站 Firenze S.M.N.，可轉乘火車與T2線） → Valfonda - Stazione S.M.N. → Fortezza → … → Statuto → … → Careggi Ospedale（北端終點） </p>
+
+<br>
+
+                    <p style="margin-left: 20px; color: #666;"><strong>重要站點: Santa Maria Novella (SMN 火車站)、Unità、Alamanni </strong> </p>
+                    
+                    <p style="margin: 15px 0;"><strong style="color: #0d7377;">T2線:</strong> Peretola Aeroporto ↔ Piazza dell'Unità</p>
+
+<p style="margin-left: 20px; color: #666;">路線：Peretola Aeroporto（佛羅倫斯機場） → … → Novoli - Palazzi Rossi → … → Ponte all’Asse → … → Belfiore → Alamanni-Stazione（新聖母大殿火車站 Firenze S.M.N.，可轉乘火車與T1線） → Unità（市中心終點站） </p>
+
+<br>
+
+                    <p style="margin-left: 20px; color: #666;"><strong>連接機場與市中心</strong> </p>
+                    
+                    <p style="margin-top: 20px; padding: 15px; background: white; border-radius: 8px; border-left: 4px solid var(--color-primary);">
+                        💡 <strong>提示:</strong> 佛羅倫斯歷史中心主要靠步行遊覽。電車主要連接火車站與郊區，市內景點之間距離不遠。
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div id="notes" class="tab-content">
+            <h2 style="color: var(--color-primary); margin-bottom: 25px;">📝 旅行記事本</h2>
+            <p style="margin-bottom: 15px; color: #666;">隨時記錄旅途中的想法、地址、電話號碼等重要資訊</p>
+            <textarea class="notes-editor" id="notesContent" placeholder="在此輸入您的筆記...&#10;&#10;例如：&#10;- 緊急聯絡電話&#10;- 酒店 WiFi 密碼&#10;- 推薦的小店地址&#10;- 旅行感想"></textarea>
+            <button class="btn btn-primary" onclick="saveNotes()" style="margin-top: 15px;">💾 儲存筆記</button>
+            <button class="btn btn-secondary" onclick="clearNotes()" style="margin-top: 15px; margin-left: 10px;">🗑️ 清空</button>
+        </div>
+    
+        <div id="timezone" class="tab-content">
+            <h2 style="color: var(--color-primary); margin-bottom: 25px;">⏰ 實時時差與換算</h2>
+
+            <div style="background: white; padding: 20px; border-radius: 15px; margin-bottom: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); color: black;">
+                <h3 style="margin-bottom: 15px; border-bottom: 2px solid var(--color-bg-light); padding-bottom: 10px;">🌍 現在時間</h3>
+                <div style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+                    <div style="flex: 1; min-width: 100px; text-align: center; background: var(--color-bg-light); padding: 15px; border-radius: 8px;">
+                        <div style="font-weight: bold; margin-bottom: 8px; color: black;">🇭🇰 香港 (HKT)</div>
+                        <div id="current-time-hk" style="font-size: 1em; color: var(--color-primary); font-weight: bold;">--:--:--</div>
+                    </div>
+                    <div style="flex: 1; min-width: 100px; text-align: center; background: var(--color-bg-light); padding: 15px; border-radius: 8px;">
+                        <div style="font-weight: bold; margin-bottom: 8px; color: black;">🇶🇦 多哈 (AST)</div>
+                        <div id="current-time-doha" style="font-size: 1em; color: var(--color-primary); font-weight: bold;">--:--:--</div>
+                    </div>
+                    <div style="flex: 1; min-width: 100px; text-align: center; background: var(--color-bg-light); padding: 15px; border-radius: 8px;">
+                        <div style="font-weight: bold; margin-bottom: 8px; color: black;">🇮🇹 意大利 (CET/CEST)</div>
+                        <div id="current-time-italy" style="font-size: 1em; color: var(--color-primary); font-weight: bold;">--:--:--</div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="background: white; padding: 20px; border-radius: 15px; margin-bottom: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); color: black;">
+                <h3 style="margin-bottom: 15px; border-bottom: 2px solid var(--color-bg-light); padding-bottom: 10px;">🔄 時間換算計算機</h3>
+
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 5px; font-weight: bold; color: black;">1. 選擇輸入時間的地區：</label>
+                    <select id="tz-source-region" style="width: 80%; padding: 12px; border: 1px solid var(--color-border); border-radius: 8px; font-size: 1em;">
+                        <option value="Asia/Hong_Kong">🇭🇰 香港 (HKT)</option>
+                        <option value="Asia/Qatar">🇶🇦 多哈 (AST)</option>
+                        <option value="Europe/Rome" selected>🇮🇹 意大利 (CET/CEST)</option>
+                    </select>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 5px; font-weight: bold; color: black;">2. 選擇日期與時間：</label>
+                    <input type="datetime-local" id="tz-input-time" style="width: 80%; padding: 12px; border: 1px solid var(--color-border); border-radius: 8px; font-size: 1em; box-sizing: border-box;">
+                </div>
+
+                <div style="background: var(--color-bg-light); padding: 15px; border-radius: 8px; border: 1px solid var(--color-border);">
+                    <h4 style="margin-bottom: 15px; color: var(--color-primary);">換算結果：</h4>
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 10px; border-bottom: 1px solid #ddd;">
+                            <span style="font-weight: bold; color: black;">🇭🇰 香港時間:</span>
+                            <span id="tz-result-hk" style="font-size: 1.1em; color: black;">--</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 10px; border-bottom: 1px solid #ddd;">
+                            <span style="font-weight: bold; color: black;">🇶🇦 多哈時間:</span>
+                            <span id="tz-result-doha" style="font-size: 1.1em; color: black;">--</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-weight: bold; color: black;">🇮🇹 羅馬時間:</span>
+                            <span id="tz-result-italy" style="font-size: 1.1em; color: black;">--</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <div id="settings" class="tab-content">
+            <h2 style="color: var(--color-primary); margin-bottom: 25px;">⚙️ 資料管理 (匯出/匯入)</h2>
+
+            <div style="background: white; padding: 20px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
+                <h3 style="margin-bottom: 15px;">📥 備份與匯出</h3>
+                <p style="color: #666; margin-bottom: 15px; font-size: 0.95em;">將所有的記帳、筆記、購物清單等資料下載到裝置中保存。</p>
+                <button class="btn btn-primary" onclick="exportData()">⬇️ 下載備份檔案 (.json)</button>
+            </div>
+
+            <div style="background: white; padding: 20px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
+                <h3 style="margin-bottom: 15px;">📤 恢復與匯入</h3>
+                <p style="color: #666; margin-bottom: 15px; font-size: 0.95em;">選擇之前下載的備份檔案，恢復所有資料。<br><strong style="color:var(--color-danger);">注意：這會覆蓋並替換當前App內的所有資料！</strong></p>
+                <input type="file" id="importFile" accept=".json" style="margin-bottom: 15px; display: block; padding: 10px; border: 1px solid var(--color-border); border-radius: 8px; width: 100%; max-width: 400px;">
+                <button class="btn btn-secondary" onclick="importData()">⬆️ 匯入並覆蓋資料</button>
+            </div>
+
+            <div style="background: #ffe3e3; padding: 20px; border-radius: 10px; margin-bottom: 20px; border: 1px solid #ffcccc;">
+                <h3 style="margin-bottom: 15px; color: var(--color-danger);">⚠️ 刪除重設</h3>
+                <p style="color: #666; margin-bottom: 15px; font-size: 0.95em;">這將清除所有已儲存的記帳、筆記、清單等內容。此操作無法復原，請務必先備份！</p>
+                <button class="btn btn-danger" onclick="resetAllData()">🗑️ 一鍵重設所有資料</button>
+            </div>
+        </div>
+        </div>
+
+    
+<script>
+        // 自動儲存功能
+        function saveToLocalStorage(key, data) {
+            localStorage.setItem(key, JSON.stringify(data));
+        }
+
+        function loadFromLocalStorage(key) {
+            const data = localStorage.getItem(key);
+            return data ? JSON.parse(data) : null;
+        }
+
+        // Tab 切換
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        tabBtns.forEach((btn, index) => {
+            btn.addEventListener('click', () => {
+                tabBtns.forEach(b => b.classList.remove('active'));
+                tabContents.forEach(c => c.classList.remove('active'));
+                btn.classList.add('active');
+                document.getElementById(btn.dataset.tab).classList.add('active');
+                saveToLocalStorage('activeTab', btn.dataset.tab);
+            });
+        });
+
+        // 載入上次選擇的分頁
+        window.addEventListener('load', () => {
+            const lastTab = loadFromLocalStorage('activeTab');
+            if (lastTab) {
+                const tabBtn = document.querySelector(`[data-tab="${lastTab}"]`);
+                if (tabBtn) tabBtn.click();
+            }
+        });
+
+        // 左右箭頭按鈕轉頁功能
+        function navigateTabs(direction) {
+            const activeTab = document.querySelector('.tab-btn.active');
+            const allTabs = Array.from(document.querySelectorAll('.tab-btn'));
+            const currentIndex = allTabs.indexOf(activeTab);
+            let nextIndex = currentIndex + direction;
+
+            if (nextIndex < 0) nextIndex = allTabs.length - 1;
+            if (nextIndex >= allTabs.length) nextIndex = 0;
+
+            allTabs[nextIndex].click();
+        }
+
+        // 展開/收起每日行程
+        function toggleDay(day) {
+            if (typeof isItineraryEditMode !== 'undefined' && isItineraryEditMode) return;
+            const details = document.getElementById('day' + day);
+            if (details) details.classList.toggle('show');
+        }
+
+        // 記帳功能
+        let expenses = loadFromLocalStorage('expenses') || [];
+        const EUR_TO_HKD = 9.2;
+        let travelers = loadFromLocalStorage('travelers') || ['我'];
+
+        function renderTravelersUI() {
+            const chips = document.getElementById('travelersChips');
+            const payerSelect = document.getElementById('expensePayer');
+            const countText = document.getElementById('travelersCountText');
+
+            if (!travelers || travelers.length === 0) travelers = ['我'];
+            saveToLocalStorage('travelers', travelers);
+
+            if(countText) countText.textContent = travelers.length;
+
+            if(chips) {
+                chips.innerHTML = travelers.map((name, idx) => `
+                    <span style="display:inline-flex; align-items:center; gap:8px; padding:6px 10px; border-radius:20px; background:#f1f3f5; border:1px solid #e0e0e0; color:#333; font-size:14px;">
+                        <span style="font-weight:600;">${name}</span>
+                        <span style="cursor:pointer; color:var(--color-danger); font-weight:bold; padding:0 4px;" onclick="removeTraveler(${idx})">×</span>
+                    </span>
+                `).join('');
+            }
+
+            if(payerSelect) {
+                const currentPayer = payerSelect.value;
+                payerSelect.innerHTML = travelers.map(name => `<option value="${name}">${name}</option>`).join('');
+                if (travelers.includes(currentPayer)) {
+                    payerSelect.value = currentPayer;
+                }
+            }
+        }
+
+        function addTraveler() {
+            const input = document.getElementById('travelerNameInput');
+            if(!input) return;
+            const name = input.value.trim();
+            if (!name) return;
+            if (travelers.includes(name)) {
+                alert('這個名字已存在');
+                return;
+            }
+            travelers.push(name);
+            input.value = '';
+            renderTravelersUI();
+            updateExpenseDisplay();
+        }
+
+        function removeTraveler(index) {
+            if (travelers.length <= 1) {
+                alert('最少需要保留一名旅行者！');
+                return;
+            }
+            if (confirm(`確定要刪除旅行者「${travelers[index]}」嗎？`)) {
+                travelers.splice(index, 1);
+                renderTravelersUI();
+                updateExpenseDisplay();
+            }
+        }
+
+        function updateExpenseDisplay() {
+            const list = document.getElementById('expenseList');
+            const totalHKD = expenses.reduce((sum, exp) => {
+                const amountInHKD = exp.currency === 'EUR' ? exp.amount * EUR_TO_HKD : exp.amount;
+                return sum + amountInHKD;
+            }, 0);
+            const totalEUR = totalHKD / EUR_TO_HKD;
+
+            document.getElementById('totalExpense').textContent = `HKD $${totalHKD.toFixed(2)}`;
+            document.getElementById('totalExpenseEur').textContent = `EUR €${totalEUR.toFixed(2)}`;
+            document.getElementById('exchangeRate').textContent = EUR_TO_HKD;
+
+            const travelersCount = travelers && travelers.length > 0 ? travelers.length : 1;
+            const perPersonHKD = totalHKD / travelersCount;
+            const perPersonEUR = totalEUR / travelersCount;
+            
+            document.getElementById('perPersonExpense').textContent = 
+                `人均支出: HKD $${perPersonHKD.toFixed(2)} (EUR €${perPersonEUR.toFixed(2)})`;
+
+            // 計算各付款人支出與應補貼/收回金額
+            const paidBy = {};
+            travelers.forEach(n => paidBy[n] = 0);
+
+            expenses.forEach(exp => {
+                const amountHKD = exp.currency === 'EUR' ? exp.amount * EUR_TO_HKD : exp.amount;
+                const p = exp.payer || travelers[0];
+                if (paidBy[p] === undefined) paidBy[p] = 0;
+                paidBy[p] += amountHKD;
+            });
+
+            const perPayerDiv = document.getElementById('perPayerPaid');
+            if(perPayerDiv) {
+                perPayerDiv.innerHTML = `
+                    <div style="margin-top:10px; padding-top:10px; border-top:1px solid rgba(255,255,255,0.3);">
+                        <div style="font-weight:700; margin-bottom:8px;">💳 各人已付與結算:</div>
+                        ${Object.entries(paidBy).map(([name, hkd]) => {
+                            const diffHKD = hkd - perPersonHKD;
+                            let diffText = '';
+                            if (diffHKD > 0.01) {
+                                diffText = `<span style="color:#28a745; font-weight:600;">(需收回 HKD $${diffHKD.toFixed(1)})</span>`;
+                            } else if (diffHKD < -0.01) {
+                                diffText = `<span style="color:#ffc107; font-weight:600;">(需補貼 HKD $${Math.abs(diffHKD).toFixed(1)})</span>`;
+                            } else {
+                                diffText = `<span style="color:#e0e0e0;">(已結清)</span>`;
+                            }
+                            return `<div style="display:flex; justify-content:space-between; margin-bottom:6px; font-size:0.95em;">
+                                <span>👤 ${name} <span style="font-size:0.85em; color:#ddd;">(已付: $${hkd.toFixed(0)})</span></span>
+                                <span style="text-align:right;">${diffText}</span>
+                            </div>`;
+                        }).join('')}
+                    </div>
+                `;
+            }
+
+                       list.innerHTML = expenses.map((exp, index) => `
+                <div class="expense-item">
+                    <div class="expense-info">
+                        <div style="display: flex; gap: 15px; align-items: baseline; margin-bottom: 8px;">
+                            <span style="font-weight: bold; font-size: 1.1em; color: #333;">${exp.category}</span>
+                            <span style="color: #888; font-size: 0.85em;">${exp.date}</span>
+                            <span style="background: #e9ecef; color: #495057; padding: 2px 6px; border-radius: 4px; font-size: 0.8em; margin-left: 5px;">💳 ${exp.payer || travelers[0]}</span>
+                        </div>
+                        <div style="color: #444; font-size: 1em; margin-bottom: 5px;">${exp.note}</div>
+                        <div class="currency-display" style="color: #666; font-size: 0.85em;">
+                            ${exp.currency === 'EUR' 
+                                ? `EUR €${exp.amount.toFixed(2)} <span style="color:#aaa;">≈ HKD $${(exp.amount * EUR_TO_HKD).toFixed(2)}</span>`
+                                : `HKD $${exp.amount.toFixed(2)}`
+                            }
+                        </div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <div class="expense-amount">${exp.currency === 'EUR' ? '€' : '$'}${exp.amount.toFixed(2)}</div>
+                        <button class="btn btn-danger" onclick="deleteExpense(${index})">刪除</button>
+                    </div>
+                </div>
+            `).join('');
+
+        }
+
+        function addExpense() {
+            const date = document.getElementById('expenseDate').value;
+            const category = document.getElementById('expenseCategory').value;
+            const currency = document.getElementById('expenseCurrency').value;
+            const amount = parseFloat(document.getElementById('expenseAmount').value);
+            const note = document.getElementById('expenseNote').value;
+            const payer = document.getElementById('expensePayer') ? document.getElementById('expensePayer').value : travelers[0];
+
+            if (!amount || amount <= 0) {
+                alert('請輸入有效金額');
+                return;
+            }
+
+            expenses.push({ date, category, currency, amount, note, payer });
+            saveToLocalStorage('expenses', expenses);
+            updateExpenseDisplay();
+
+            document.getElementById('expenseAmount').value = '';
+            document.getElementById('expenseNote').value = '';
+        }
+
+        function deleteExpense(index) {
+            if (confirm('確定要刪除這筆支出嗎？')) {
+                expenses.splice(index, 1);
+                saveToLocalStorage('expenses', expenses);
+                updateExpenseDisplay();
+            }
+        }
+
+       // 餐廳功能
+        let restaurants = loadFromLocalStorage('restaurants') || [
+            // -------------------- 羅馬 (Rome) --------------------
+            {
+                name: 'Piccolo Buco',
+                city: '羅馬',
+                address: 'Via Lavatore, 91, 00187 Roma',
+                booking: '',
+                review: 'https://kimiyo.tw/piccolo-buco/',
+                note: '特雷維噴泉旁人氣排隊 Pizza，外厚內軟拿坡里式。'
+            },
+            {
+                name: 'Da Enzo al 29',
+                city: '羅馬',
+                address: 'Via dei Vascellari, 29, 00153 Roma',
+                booking: '',
+                review: 'https://tripadvisor.com.hk/Restaurant_Review-g187791-d2231399-Reviews-Da_Enzo_Al_29-Rome_Lazio.html',
+                note: 'Trastevere區超紅傳統羅馬菜，必吃Carbonara與炸櫛瓜花，不接受預約需排隊。'
+            },
+            {
+                name: 'Trecaffè - Prati',
+                city: '羅馬',
+                address: 'Via Leone IV, 10, 00192 Roma',
+                booking: '',
+                review: 'https://www.tripadvisor.com.hk/Restaurant_Review-g187791-d19775517-Reviews-Trecaffe_Leone_IV-Rome_Lazio.html',
+                note: '梵蒂岡附近評價極高的咖啡廳，咖啡與可頌一流，適合早晨參觀前吃早餐。'
+            },
+            {
+                name: 'Cantina e Cucina',
+                city: '羅馬',
+                address: 'Via del Governo Vecchio, 87, 00186 Roma',
+                booking: '',
+                review: 'https://www.tripadvisor.com.hk/Restaurant_Review-g187791-d2094750-Reviews-Cantina_Cucina-Rome_Lazio.html',
+                note: '納沃納廣場附近，氣氛熱絡、裝潢復古的義大利麵與披薩好店。'
+            },
+            {
+                name: 'Pompi Tiramisù',
+                city: '羅馬',
+                address: 'Via della Croce, 82, 00187 Roma',
+                booking: '',
+                review: 'https://monicaineurope.com/rome-pompi',
+                note: '號稱羅馬最好吃的提拉米蘇！西班牙廣場旁，也有草莓、開心果口味。'
+            },
+            {
+                name: 'Gelateria Fatamorgana',
+                city: '羅馬',
+                address: 'Piazza degli Zingari, 5, 00184 Roma',
+                booking: '',
+                review: '',
+                note: '羅馬極具代表性的純天然創意口味 Gelato (多間分店)。'
+            },
+
+            // -------------------- 佛羅倫斯 & 錫耶納 (Florence & Siena) --------------------
+            {
+                name: 'Trattoria Zà Zà',
+                city: '佛羅倫斯',
+                address: 'Piazza del Mercato Centrale, 26r, 50123 Firenze',
+                booking: '',
+                review: 'https://www.tripadvisor.com.hk/Restaurant_Review-g187895-d1102359-Reviews-Trattoria_Za_Za-Florence_Tuscany.html',
+                note: '中央市場旁名店，必點 1kg 丁骨大牛排 (Bistecca) 及松露義大利麵，適合分享。'
+            },
+            {
+                name: 'Trattoria Sostanza',
+                city: '佛羅倫斯',
+                address: 'Via del Porcellana, 25/R, 50123 Firenze',
+                booking: '',
+                review: 'https://www.tripadvisor.com.hk/Restaurant_Review-g187895-d743678-Reviews-Trattoria_Sostanza-Florence_Tuscany.html',
+                note: '百年老店，招牌是「鐵鍋奶油煎雞胸肉」與佛羅倫斯牛排。座位極少強烈建議預約！'
+            },
+            {
+                name: 'Mercato Centrale (中央市場美食街)',
+                city: '佛羅倫斯',
+                address: 'Piazza del Mercato Centrale, Via dell\'Ariento, 50123 Firenze',
+                booking: '',
+                review: '',
+                note: '一樓必吃 Da Nerbone 牛肚包 (僅中午)。二樓為高級美食街(營業至深夜)，有松露麵、拿坡里披薩等，選擇多樣。'
+            },
+            {
+                name: 'Osteria Santo Spirito',
+                city: '佛羅倫斯',
+                address: 'Piazza Santo Spirito, 16/R, 50125 Firenze',
+                booking: '',
+                review: '',
+                note: '位於過河區的熱門小酒館，招牌是烤起司松露麵疙瘩 (Gnocchi)，份量大價格合理。'
+            },
+            {
+                name: 'Osteria Le Logge',
+                city: '錫耶納',
+                address: 'Via del Porrione, 33, 53100 Siena',
+                booking: '',
+                review: 'https://www.tripadvisor.com.hk/Restaurant_Review-g187902-d1088333-Reviews-Osteria_le_Logge-Siena_Tuscany.html',
+                note: 'Siena田野廣場旁，精緻高雅的米其林推薦餐廳，服務與酒單一流。'
+            },
+
+            // -------------------- 米蘭 (Milan) --------------------
+            {
+                name: 'Ristorante Galleria',
+                city: '米蘭',
+                address: 'Galleria Vittorio Emanuele II, 75, 20121 Milano',
+                booking: '',
+                review: 'https://www.bring-you.info/zh-tw/ristorante-galleria',
+                note: '艾曼紐二世迴廊內，位置絕佳，必吃經典米蘭燉飯與炸牛膝 (Ossobuco)。'
+            },
+            {
+                name: 'Luini Panzerotti',
+                city: '米蘭',
+                address: 'Via Santa Radegonda, 16, 20121 Milano',
+                booking: '',
+                review: 'https://mangofamily56.com/panzerotti-luini/',
+                note: '米蘭大教堂旁傳奇排隊小吃！現炸番茄起司餡餅，便宜美味，隊伍移動快。'
+            },
+            {
+                name: 'Pizzeria Spontini',
+                city: '米蘭',
+                address: 'Via Santa Radegonda, 11, 20121 Milano',
+                booking: '',
+                review: '',
+                note: 'Luini 旁邊的知名厚片披薩，底部酥脆、牽絲起司超厚，適合快速解決一餐。'
+            },
+            {
+                name: 'Osteria della Darsena (或 Navigli區餐廳)',
+                city: '米蘭',
+                address: 'Navigli 運河區',
+                booking: '',
+                review: '',
+                note: '米蘭運河區是晚餐與 Aperitivo (餐前酒) 聖地，氣氛絕佳。'
+            }
+        ];
+
+
+        function updateRestaurantDisplay() {
+            const list = document.getElementById('restaurantList');
+            list.innerHTML = restaurants.map((r, index) => `
+                <div class="restaurant-card">
+                    <div class="restaurant-header">
+                        <div>
+                            <div class="restaurant-name">${r.name}</div>
+                            <div style="color: #666; margin-bottom: 10px;">📍 ${r.city}</div>
+                            <div style="color: #666; font-size: 0.95em;">${r.address}</div>
+                        </div>
+                        <button class="btn btn-danger" onclick="deleteRestaurant(${index})">刪除</button>
+                    </div>
+                    ${r.note ? `<div style="margin: 10px 0; padding: 10px; background: #f8f9fa; border-radius: 5px;">${r.note}</div>` : ''}
+                    <div class="restaurant-links">
+                        <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(r.address)}" target="_blank" class="link-btn">🗺️ 導航</a>
+                        ${r.booking ? `<a href="${r.booking}" target="_blank" class="link-btn">📅 訂位</a>` : ''}
+                        ${r.review ? `<a href="${r.review}" target="_blank" class="link-btn">⭐ 食評</a>` : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function addRestaurant() {
+            const name = document.getElementById('restaurantName').value;
+            const city = document.getElementById('restaurantCity').value;
+            const address = document.getElementById('restaurantAddress').value;
+            const booking = document.getElementById('restaurantBooking').value;
+            const review = document.getElementById('restaurantReview').value;
+            const note = document.getElementById('restaurantNote').value;
+
+            if (!name || !address) {
+                alert('請輸入餐廳名稱和地址');
+                return;
+            }
+
+            restaurants.push({ name, city, address, booking, review, note });
+            saveToLocalStorage('restaurants', restaurants);
+            updateRestaurantDisplay();
+
+            document.getElementById('restaurantName').value = '';
+            document.getElementById('restaurantAddress').value = '';
+            document.getElementById('restaurantBooking').value = '';
+            document.getElementById('restaurantReview').value = '';
+            document.getElementById('restaurantNote').value = '';
+        }
+
+        function deleteRestaurant(index) {
+            if (confirm('確定要刪除這間餐廳嗎？')) {
+                restaurants.splice(index, 1);
+                saveToLocalStorage('restaurants', restaurants);
+                updateRestaurantDisplay();
+            }
+        }
+
+        // 待辦事項功能
+        let todos = loadFromLocalStorage('todos') || [
+            { text: '預約梵蒂岡博物館門票 (21/5 15:00)', priority: '高', completed: false },
+            { text: '預約羅馬競技場門票 (20/4搶票)', priority: '高', completed: false },
+            { text: '提前訂 Da Enzo al 29 晚餐', priority: '高', completed: false },
+            { text: '下載 Google Maps 離線地圖', priority: '中', completed: false },
+            { text: '準備轉換插頭', priority: '中', completed: false },
+            { text: '列印酒店確認信', priority: '低', completed: false }
+        ];
+
+        function updateTodoDisplay() {
+            const list = document.getElementById('todoList');
+            list.innerHTML = todos.map((todo, index) => `
+                <div class="todo-item ${todo.completed ? 'completed' : ''}">
+                    <input type="checkbox" class="todo-checkbox" ${todo.completed ? 'checked' : ''} onchange="toggleTodo(${index})">
+                    <div style="flex: 1;">
+                        <div style="font-weight: 500; margin-bottom: 5px;">${todo.text}</div>
+                        <div style="font-size: 0.9em; color: #666;">優先度: ${todo.priority}</div>
+                    </div>
+                    <button class="btn btn-danger" onclick="deleteTodo(${index})">刪除</button>
+                </div>
+            `).join('');
+        }
+
+        function addTodo() {
+            const text = document.getElementById('todoText').value;
+            const priority = document.getElementById('todoPriority').value;
+
+            if (!text) {
+                alert('請輸入待辦事項');
+                return;
+            }
+
+            todos.push({ text, priority, completed: false });
+            saveToLocalStorage('todos', todos);
+            updateTodoDisplay();
+
+            document.getElementById('todoText').value = '';
+        }
+
+        function toggleTodo(index) {
+            todos[index].completed = !todos[index].completed;
+            saveToLocalStorage('todos', todos);
+            updateTodoDisplay();
+        }
+
+        function deleteTodo(index) {
+            if (confirm('確定要刪除這項待辦事項嗎？')) {
+                todos.splice(index, 1);
+                saveToLocalStorage('todos', todos);
+                updateTodoDisplay();
+            }
+        }
+
+        // 購物清單功能
+        let shoppingList = loadFromLocalStorage('shoppingList') || [
+            { item: 'Gucci 手袋', category: '精品', budget: 'EUR €800-1200', note: 'Serravalle Outlet', purchased: false },
+            { item: 'Prada 太陽眼鏡', category: '精品', budget: 'EUR €200-300', note: '', purchased: false },
+            { item: '意大利巧克力', category: '食品', budget: 'EUR €50', note: '機場免稅店', purchased: false },
+            { item: '威尼斯面具', category: '紀念品', budget: 'EUR €30', note: '羅馬紀念品店', purchased: false }
+        ];
+
+        function updateShoppingDisplay() {
+            const list = document.getElementById('shoppingList');
+            list.innerHTML = shoppingList.map((item, index) => `
+                <div class="shopping-item ${item.purchased ? 'completed' : ''}">
+                    <input type="checkbox" class="todo-checkbox" ${item.purchased ? 'checked' : ''} onchange="toggleShopping(${index})">
+                    <div style="flex: 1;">
+                        <div style="font-weight: 500; margin-bottom: 5px;">${item.item}</div>
+                        <div style="font-size: 0.9em; color: #666; display: flex; gap: 15px; flex-wrap: wrap;">
+                            <span>${item.category}</span>
+                            ${item.budget ? `<span>💰 ${item.budget}</span>` : ''}
+                            ${item.note ? `<span>📝 ${item.note}</span>` : ''}
+                        </div>
+                    </div>
+                    <button class="btn btn-danger" onclick="deleteShopping(${index})">刪除</button>
+                </div>
+            `).join('');
+        }
+
+        function addShoppingItem() {
+            const item = document.getElementById('shoppingItem').value;
+            const category = document.getElementById('shoppingCategory').value;
+            const budget = document.getElementById('shoppingBudget').value;
+            const note = document.getElementById('shoppingNote').value;
+
+            if (!item) {
+                alert('請輸入物品名稱');
+                return;
+            }
+
+            shoppingList.push({ item, category, budget, note, purchased: false });
+            saveToLocalStorage('shoppingList', shoppingList);
+            updateShoppingDisplay();
+
+            document.getElementById('shoppingItem').value = '';
+            document.getElementById('shoppingBudget').value = '';
+            document.getElementById('shoppingNote').value = '';
+        }
+
+        function toggleShopping(index) {
+            shoppingList[index].purchased = !shoppingList[index].purchased;
+            saveToLocalStorage('shoppingList', shoppingList);
+            updateShoppingDisplay();
+        }
+
+        function deleteShopping(index) {
+            if (confirm('確定要刪除這項物品嗎？')) {
+                shoppingList.splice(index, 1);
+                saveToLocalStorage('shoppingList', shoppingList);
+                updateShoppingDisplay();
+            }
+        }
+
+        // 記事本功能
+        let notes = loadFromLocalStorage('notes') || '';
+        document.getElementById('notesContent').value = notes;
+
+        function saveNotes() {
+            notes = document.getElementById('notesContent').value;
+            saveToLocalStorage('notes', notes);
+            alert('筆記已儲存！');
+        }
+
+        function clearNotes() {
+            if (confirm('確定要清空所有筆記嗎？此操作無法復原。')) {
+                notes = '';
+                document.getElementById('notesContent').value = '';
+                saveToLocalStorage('notes', notes);
+                alert('筆記已清空');
+            }
+        }
+
+        // 自動儲存記事本（每30秒）
+        setInterval(() => {
+            const currentNotes = document.getElementById('notesContent').value;
+            if (currentNotes !== notes) {
+                notes = currentNotes;
+                saveToLocalStorage('notes', notes);
+            }
+        }, 30000);
+
+        // 初始化顯示
+        renderTravelersUI();
+        updateExpenseDisplay();
+        updateRestaurantDisplay();
+        updateTodoDisplay();
+        updateShoppingDisplay();
+
+        // 替換成你在 OpenWeatherMap 申請的 API Key
+        const WEATHER_API_KEY = '71dc79f3f2dea2fdf16fb7cc46195fc1'; 
+
+        // 建立城市名稱對照表 (將中文轉為API認得的英文城市名，加入國家代碼確保準確)
+        const cityMap = {
+            '羅馬': 'Rome,IT',
+            '佛羅倫斯': 'Florence,IT',
+            '米蘭': 'Milan,IT'
+        };
+
+        // 轉換天氣描述為 Emoji
+        function getWeatherEmoji(weatherCode) {
+            if (weatherCode >= 200 && weatherCode < 300) return '⛈️';
+            if (weatherCode >= 300 && weatherCode < 600) return '🌧️';
+            if (weatherCode >= 600 && weatherCode < 700) return '❄️';
+            if (weatherCode >= 700 && weatherCode < 800) return '🌫️';
+            if (weatherCode === 800) return '☀️';
+            if (weatherCode === 801 || weatherCode === 802) return '🌤️';
+            return '☁️';
+        }
+
+        async function updateWeatherByCity() {
+            const selectedCity = document.getElementById('citySelect').value;
+            const queryCity = cityMap[selectedCity];
+
+            if (WEATHER_API_KEY === '你的API_KEY請貼在這裡') {
+                alert('請先在程式碼中填寫 OpenWeatherMap 的 API Key！');
+                return;
+            }
+
+            try {
+                // 1. 獲取實時天氣
+                const currentRes = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${queryCity}&appid=${WEATHER_API_KEY}&units=metric&lang=zh_tw`);
+                const currentData = await currentRes.json();
+                
+                // 2. 獲取未來5天預報 (每3小時一筆資料)
+                const forecastRes = await fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${queryCity}&appid=${WEATHER_API_KEY}&units=metric&lang=zh_tw`);
+                const forecastData = await forecastRes.json();
+
+                if (currentRes.ok && forecastRes.ok) {
+                    updateCurrentWeather(currentData, selectedCity);
+                    updateForecastDisplay(forecastData);
+                } else {
+                    console.error("API Error:", currentData.message);
+                }
+            } catch (error) {
+                console.error("無法取得天氣資料:", error);
+                document.querySelector('.weather-card div:nth-child(3)').textContent = "⚠️ 無法取得天氣資料，請檢查網路或 API Key";
+            }
+        }
+
+        function updateCurrentWeather(data, cityName) {
+            const weatherCard = document.querySelector('.weather-container .weather-card');
+            const temp = Math.round(data.main.temp);
+            const emoji = getWeatherEmoji(data.weather[0].id);
+            const description = data.weather[0].description;
+            
+            weatherCard.querySelector('.weather-temp').textContent = `${temp}°C`;
+            weatherCard.querySelector('div:nth-child(3)').textContent = `${emoji} ${cityName} - ${description}`;
+            weatherCard.querySelector('.weather-info').innerHTML = `
+                <div>💧 濕度: ${data.main.humidity}%</div>
+                <div>💨 風速: ${Math.round(data.wind.speed * 3.6)} km/h</div>
+            `;
+            
+            const now = new Date();
+            weatherCard.querySelector('.last-updated').textContent = 
+                `最後更新: ${now.getFullYear()}年${now.getMonth()+1}月${now.getDate()}日 ${now.getHours()}:${String(now.getMinutes()).padStart(2, '0')}`;
+        }
+
+        function updateForecastDisplay(data) {
+            const forecastContainer = document.getElementById('forecastContainer');
+            let forecastHTML = '';
+            
+            // 過濾資料：API會回傳每3小時一筆，我們只抓每天中午12點的資料當作該日預報
+            const dailyData = data.list.filter(item => item.dt_txt.includes('12:00:00'));
+            
+            // 如果抓不到剛好5天(有時最後一天時間未到)，就拿前5筆
+            const fiveDaysData = dailyData.slice(0, 5);
+
+            fiveDaysData.forEach((day, index) => {
+                const date = new Date(day.dt * 1000);
+                const emoji = getWeatherEmoji(day.weather[0].id);
+                
+                // 判斷是否為明天
+                const dateTitle = index === 0 
+                    ? `明天 (${date.getMonth()+1}月${date.getDate()}日)` 
+                    : `${date.getMonth()+1}月${date.getDate()}日`;
+
+                forecastHTML += `
+                    <div class="weather-card">
+                        <h3>${dateTitle}</h3>
+                        <div class="weather-temp">${Math.round(day.main.temp)}°C</div>
+                        <div style="font-size: 1.2em; margin: 10px 0;">
+                            ${emoji} ${day.weather[0].description}
+                        </div>
+                        <div class="weather-info">
+                            <div>💧 濕度: ${day.main.humidity}%</div>
+                            <div>💨 風速: ${Math.round(day.wind.speed * 3.6)} km/h</div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            forecastContainer.innerHTML = forecastHTML;
+        }
+
+        // 當切換到天氣 Tab 時，如果還沒載入資料就觸發第一次載入
+        document.querySelector('.tab-btn[data-tab="weather"]').addEventListener('click', function() {
+            const currentTemp = document.querySelector('.weather-temp').textContent;
+            if (currentTemp === '--°C') {
+                updateWeatherByCity();
+            }
+        });
+       
+    
+        // --- 時差計算機邏輯 ---
+        function updateCurrentTimes() {
+            const now = new Date();
+            const options = { 
+                timeZoneName: 'short', 
+                hour12: false, 
+                month: '2-digit', 
+                day: '2-digit', 
+                hour: '2-digit', 
+                minute: '2-digit', 
+                second: '2-digit' 
+            };
+
+            try {
+                document.getElementById('current-time-hk').innerText = now.toLocaleString('zh-HK', { timeZone: 'Asia/Hong_Kong', ...options });
+                document.getElementById('current-time-doha').innerText = now.toLocaleString('zh-HK', { timeZone: 'Asia/Qatar', ...options });
+                document.getElementById('current-time-italy').innerText = now.toLocaleString('zh-HK', { timeZone: 'Europe/Rome', ...options });
+            } catch(e) {}
+        }
+        setInterval(updateCurrentTimes, 1000);
+        updateCurrentTimes();
+
+        // 精確的時差換算 (考慮夏令時間 DST)
+        function getUtcFromLocalTz(localString, tz) {
+            // localString: "YYYY-MM-DDTHH:mm"
+            if (!localString) return null;
+            const [year, month, day, hour, minute] = localString.split(/[-T:]/).map(Number);
+
+            // 嘗試創建UTC時間，並計算目標時區在該時間點的偏移量
+            let d = new Date(Date.UTC(year, month - 1, day, hour, minute));
+
+            let parts = new Intl.DateTimeFormat('en-US', {
+                timeZone: tz,
+                year: 'numeric', month: 'numeric', day: 'numeric',
+                hour: 'numeric', minute: 'numeric', hour12: false
+            }).formatToParts(d);
+
+            let tzYear = parseInt(parts.find(p => p.type === 'year').value);
+            let tzMonth = parseInt(parts.find(p => p.type === 'month').value);
+            let tzDay = parseInt(parts.find(p => p.type === 'day').value);
+            let tzHour = parseInt(parts.find(p => p.type === 'hour').value);
+            if (tzHour === 24) tzHour = 0;
+            let tzMinute = parseInt(parts.find(p => p.type === 'minute').value);
+
+            let formattedTzDate = new Date(Date.UTC(tzYear, tzMonth - 1, tzDay, tzHour, tzMinute));
+            let diff = formattedTzDate.getTime() - d.getTime();
+
+            return new Date(d.getTime() - diff);
+        }
+
+        const tzSourceRegion = document.getElementById('tz-source-region');
+        const tzInputTime = document.getElementById('tz-input-time');
+
+        function calculateTimeDifference() {
+            const inputValue = tzInputTime.value;
+            if (!inputValue) {
+                document.getElementById('tz-result-hk').innerText = '--';
+                document.getElementById('tz-result-doha').innerText = '--';
+                document.getElementById('tz-result-italy').innerText = '--';
+                return;
+            }
+
+            const sourceZone = tzSourceRegion.value;
+            const utcDate = getUtcFromLocalTz(inputValue, sourceZone);
+
+            if (!utcDate || isNaN(utcDate.getTime())) return;
+
+            const formatOptions = { 
+                timeZoneName: 'short', 
+                hour12: false, 
+                year: 'numeric',
+                month: '2-digit', 
+                day: '2-digit', 
+                hour: '2-digit', 
+                minute: '2-digit' 
+            };
+
+            document.getElementById('tz-result-hk').innerText = utcDate.toLocaleString('zh-HK', { timeZone: 'Asia/Hong_Kong', ...formatOptions });
+            document.getElementById('tz-result-doha').innerText = utcDate.toLocaleString('zh-HK', { timeZone: 'Asia/Qatar', ...formatOptions });
+            document.getElementById('tz-result-italy').innerText = utcDate.toLocaleString('zh-HK', { timeZone: 'Europe/Rome', ...formatOptions });
+        }
+
+        tzSourceRegion.addEventListener('change', calculateTimeDifference);
+        tzInputTime.addEventListener('input', calculateTimeDifference);
+
+        // 初始化：將預設時間設為現在
+        const initNow = new Date();
+        // 為了美觀，將現在時間轉換為 "YYYY-MM-DDTHH:mm" 格式 (根據意大利時區)
+        const parts = new Intl.DateTimeFormat('en-CA', {
+            timeZone: 'Europe/Rome',
+            year: 'numeric', month: '2-digit', day: '2-digit',
+            hour: '2-digit', minute: '2-digit', hour12: false
+        }).formatToParts(initNow);
+
+        let initY = parts.find(p => p.type === 'year').value;
+        let initM = parts.find(p => p.type === 'month').value;
+        let initD = parts.find(p => p.type === 'day').value;
+        let initH = parts.find(p => p.type === 'hour').value;
+        if (initH === '24') initH = '00';
+        let initMin = parts.find(p => p.type === 'minute').value;
+
+        tzInputTime.value = `${initY}-${initM}-${initD}T${initH}:${initMin}`;
+        calculateTimeDifference();
+        // --- 結束時差計算機邏輯 ---
+
+        // -------------------------
+        // 資料管理 (匯出/匯入/重設)
+        // -------------------------
+        function exportData() {
+            // 需要匯出的 key 清單，或者全選
+            const keys = ['expenses', 'travelers', 'todos', 'notes', 'restaurants', 'shoppingList', 'activeTab'];
+            const data = {};
+            keys.forEach(key => {
+                const item = localStorage.getItem(key);
+                if (item) {
+                    try {
+                        data[key] = JSON.parse(item);
+                    } catch (e) {
+                        data[key] = item;
+                    }
+                }
+            });
+            const dataStr = JSON.stringify(data, null, 2);
+            const blob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            const date = new Date().toISOString().split('T')[0];
+            a.download = `italy_travel_backup_${date}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function importData() {
+            const fileInput = document.getElementById('importFile');
+            const file = fileInput.files[0];
+            if (!file) {
+                alert('請先選擇一個備份檔案 (.json)');
+                return;
+            }
+
+            if (!confirm('匯入將會覆蓋當前所有資料，確定要繼續嗎？')) {
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    Object.keys(data).forEach(key => {
+                        if (typeof data[key] === 'string') {
+                            localStorage.setItem(key, data[key]);
+                        } else {
+                            localStorage.setItem(key, JSON.stringify(data[key]));
+                        }
+                    });
+                    alert('資料匯入成功！系統將重新載入以顯示最新資料。');
+                    location.reload();
+                } catch (error) {
+                    alert('檔案格式錯誤，匯入失敗。');
+                    console.error(error);
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        function resetAllData() {
+            if (confirm('警告：這將會刪除所有記帳、筆記與清單！\n這一步無法復原。確定要重設嗎？')) {
+                if (confirm('再次確認：你真的要刪除所有資料嗎？')) {
+                    localStorage.clear(); // 清空所有 localStorage
+                    alert('所有資料已重設。系統即將重新載入。');
+                    location.reload();
+                }
+            }
+        }
+        
+        // -------------------------
+        // 行程表編輯功能
+        // -------------------------
+        let isItineraryEditMode = false;
+        let defaultItineraryHTML = '';
+
+        // 頁面載入時初始化行程表
+        window.addEventListener('DOMContentLoaded', () => {
+            const container = document.getElementById('itineraryContainer');
+            if (container) {
+                defaultItineraryHTML = container.innerHTML; // 儲存預設內容
+                const savedItinerary = localStorage.getItem('itineraryHTML');
+                if (savedItinerary) {
+                    container.innerHTML = savedItinerary;
+                }
+            }
+        });
+
+        function toggleEditItinerary() {
+            const container = document.getElementById('itineraryContainer');
+            const btn = document.getElementById('editItineraryBtn');
+            const resetBtn = document.getElementById('resetItineraryBtn');
+
+            if (!container) return;
+
+            isItineraryEditMode = !isItineraryEditMode;
+
+            if (isItineraryEditMode) {
+                // 進入編輯模式
+                btn.innerHTML = '💾 儲存行程';
+                btn.classList.remove('btn-secondary');
+                btn.classList.add('btn-primary');
+                resetBtn.style.display = 'inline-block';
+
+                container.contentEditable = "true";
+                container.style.border = "2px dashed var(--color-primary)";
+                container.style.padding = "15px";
+                container.style.borderRadius = "10px";
+                container.style.backgroundColor = "#f8f9fa";
+                container.style.outline = "none";
+                container.style.minHeight = "200px";
+
+                // 展開所有天數以便編輯
+                const details = container.querySelectorAll('.day-details');
+                details.forEach(el => el.classList.add('show'));
+
+                // ===== 注入新增/刪除控制按鈕 =====
+                const sections = container.querySelectorAll('.detail-section');
+                sections.forEach(section => {
+                    const h4 = section.querySelector('h4');
+                    if (!h4) return;
+
+                    const isAttraction = h4.textContent.includes('景點');
+                    const isRestaurant = h4.textContent.includes('餐廳');
+
+                    // 幫所有 p 和 attraction-item 加上刪除按鈕
+                    const items = section.querySelectorAll('.attraction-item, p');
+                    items.forEach(item => {
+                        addDeleteBtn(item);
+                    });
+
+                    // 加上新增按鈕
+                    if (isAttraction || isRestaurant) {
+                        const addBtn = document.createElement('button');
+                        addBtn.className = 'edit-control-btn';
+                        addBtn.contentEditable = "false";
+                        addBtn.innerHTML = isAttraction ? '➕ 新增景點' : '➕ 新增餐廳';
+                        addBtn.style.cssText = 'display: inline-block; margin-top: 10px; padding: 5px 10px; background: var(--color-secondary); color: var(--color-bg-dark); border: none; border-radius: 5px; cursor: pointer; font-size: 0.9em;';
+
+                        addBtn.onclick = function(e) {
+                            e.preventDefault();
+                            e.stopPropagation();
+
+                            if (isAttraction) {
+                                const newItem = document.createElement('div');
+                                newItem.className = 'attraction-item';
+                                newItem.innerHTML = '<strong>時間</strong> 新增景點名稱 <a href="#" target="_blank">🗺️ 導航</a>';
+                                section.insertBefore(newItem, addBtn);
+                                addDeleteBtn(newItem);
+                            } else {
+                                const newItem = document.createElement('p');
+                                newItem.innerHTML = '<strong>新增餐廳：</strong> 餐廳名稱及簡介';
+                                section.insertBefore(newItem, addBtn);
+                                addDeleteBtn(newItem);
+                            }
+                        };
+                        section.appendChild(addBtn);
+                    }
+                });
+
+                function addDeleteBtn(el) {
+                    if (el.querySelector('.delete-control-btn')) return; // 避免重複加
+                    el.style.position = 'relative';
+                    // 如果原本沒有 paddingRight，給一點空間放按鈕
+                    el.style.paddingRight = '35px';
+
+                    const delBtn = document.createElement('button');
+                    delBtn.className = 'edit-control-btn delete-control-btn';
+                    delBtn.contentEditable = "false";
+                    delBtn.innerHTML = '❌';
+                    delBtn.style.cssText = 'position: absolute; right: 0; top: 50%; transform: translateY(-50%); background: #ffe3e3; border: 1px solid #ffcccc; cursor: pointer; padding: 4px; font-size: 0.8em; border-radius: 4px; z-index: 10; display: flex; align-items: center; justify-content: center; width: 24px; height: 24px;';
+                    delBtn.onclick = function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        if (confirm('確定要刪除這個項目嗎？')) {
+                            el.remove();
+                        }
+                    };
+                    el.appendChild(delBtn);
+                }
+
+                alert('進入進階編輯模式！\n\n1. 你可以直接點擊文字進行修改。\n2. 點擊「❌」可刪除景點或餐廳。\n3. 點擊「➕ 新增」可增加新項目。');
+
+            } else {
+                // 儲存並退出編輯模式
+
+                // ===== 移除所有控制按鈕與樣式 =====
+                const editBtns = container.querySelectorAll('.edit-control-btn');
+                editBtns.forEach(btn => btn.remove());
+
+                const items = container.querySelectorAll('.attraction-item, p');
+                items.forEach(item => {
+                    item.style.paddingRight = '';
+                });
+
+                btn.innerHTML = '✏️ 編輯行程';
+                btn.classList.remove('btn-primary');
+                btn.classList.add('btn-secondary');
+                resetBtn.style.display = 'none';
+
+                container.contentEditable = "false";
+                container.style.border = "none";
+                container.style.padding = "0";
+                container.style.backgroundColor = "transparent";
+
+                // 儲存至 localStorage
+                const newHTML = container.innerHTML;
+                localStorage.setItem('itineraryHTML', newHTML);
+
+                // 將除第一天外的其餘天數收起
+                const days = container.querySelectorAll('.day-details');
+                days.forEach((el, index) => {
+                    if (index !== 0) el.classList.remove('show');
+                });
+
+                alert('行程已儲存成功！');
+            }
+        }
+
+        function resetItineraryToDefault() {
+            if (confirm('確定要放棄所有自訂行程，並恢復成原始預設的「11天意大利行程」嗎？')) {
+                localStorage.removeItem('itineraryHTML');
+                const container = document.getElementById('itineraryContainer');
+                if (container && defaultItineraryHTML) {
+                    container.innerHTML = defaultItineraryHTML;
+                }
+
+                if (isItineraryEditMode) {
+                    toggleEditItinerary(); // 退出編輯模式並儲存初始狀態
+                } else {
+                    alert('已恢復預設行程。');
+                    location.reload();
+                }
+            }
+        }
+</script>
+</body>
+</html>
+
