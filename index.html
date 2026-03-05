@@ -348,6 +348,23 @@
             margin-right: 20px;
         }
 
+ #expenseParticipants {
+            display: flex; flex-wrap: wrap; gap: 8px;
+            padding: 10px; border: 1px solid #e0e0e0;
+            background: #fafafa; border-radius: 10px;
+        }
+        .participant-pill {
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 6px 12px; border-radius: 20px;
+            border: 1px solid #ddd; background: #fff;
+            cursor: pointer; user-select: none; font-size: 14px;
+        }
+        .participant-actions { width: 100%; display: flex; gap: 8px; margin-bottom: 6px; }
+        .participant-actions button {
+            padding: 4px 10px; border-radius: 6px; border: 1px solid #ccc;
+            background: #eee; cursor: pointer; font-size: 0.85em;
+        }
+
         .expense-summary {
             background: linear-gradient(135deg, #0d7377 0%, #14ffec 100%);
             color: white;
@@ -1276,6 +1293,14 @@
                     人均支出: HKD $0 (EUR €0)
                 </div>
                 <div id="perPayerPaid" style="font-size: 0.95em; margin-top: 10px;"></div>
+
+ <div style="margin-top: 15px; border-top: 1px dashed rgba(255,255,255,0.4); padding-top: 15px;">
+                    <button class="btn btn-primary" onclick="showSettlement()" style="width:100%; background: #fff; color: var(--color-primary); font-weight: bold;">
+                        🔁 一鍵最少轉帳結算
+                    </button>
+                    <div id="settlementResult" style="margin-top:10px; color: #333; text-align: left;"></div>
+                </div>
+
             </div>
 
             <div class="expense-form">
@@ -1317,9 +1342,21 @@
                         </select>
                     </div>
                     <div class="form-group">
+			
                         <label>付款人</label>
                         <select id="expensePayer"></select>
                     </div>
+
+                    <!-- 以下是新增的「為誰付款」區塊 -->
+                    <div class="form-group" style="width: 100%;">
+                        <label>為誰付款（可多選）</label>
+                        <div id="expenseParticipants"></div>
+                        <div style="font-size:0.85em; color:#666; margin-top:6px;">
+                            💡 提示：全選＝共同開銷；只選某幾人＝伴侶/個人開銷
+                        </div>
+                    </div>
+                    <!-- 新增結束 -->
+
                     <div class="form-group">
                         <label>金額</label>
                         <input type="number" id="expenseAmount" placeholder="0.00" step="0.01">
@@ -2135,13 +2172,16 @@ document.addEventListener('DOMContentLoaded', () => {
             if(payerSelect) {
                 const currentPayer = payerSelect.value;
                 payerSelect.innerHTML = travelers.map(name => `<option value="${name}">${name}</option>`).join('');
-                if (travelers.includes(currentPayer)) {
-                    payerSelect.value = currentPayer;
-                }
+            if (travelers.includes(currentPayer)) {
+                payerSelect.value = currentPayer;
             }
-        }
+        } // 這是 payerSelect 區塊的結尾
+        
+        // 新增這一行
+        renderExpenseParticipantsUI();
+    } // 這是整個 renderTravelersUI 函數的結尾
 
-        function addTraveler() {
+    function addTraveler() {
             const input = document.getElementById('travelerNameInput');
             if(!input) return;
             const name = input.value.trim();
@@ -2170,84 +2210,231 @@ document.addEventListener('DOMContentLoaded', () => {
 
         function updateExpenseDisplay() {
             const list = document.getElementById('expenseList');
-            const totalHKD = expenses.reduce((sum, exp) => {
-                const amountInHKD = exp.currency === 'EUR' ? exp.amount * EUR_TO_HKD : exp.amount;
-                return sum + amountInHKD;
-            }, 0);
+            const { totalCents, paid, owed, balance } = computeBalancesCents();
+
+            const totalHKD = totalCents / 100;
             const totalEUR = totalHKD / EUR_TO_HKD;
 
-            document.getElementById('totalExpense').textContent = `HKD $${totalHKD.toFixed(2)}`;
-            document.getElementById('totalExpenseEur').textContent = `EUR €${totalEUR.toFixed(2)}`;
-            document.getElementById('exchangeRate').textContent = EUR_TO_HKD;
+           const elHKD = document.getElementById('totalExpenseHKD');
+if (elHKD) elHKD.textContent = `HKD $${totalHKD.toFixed(2)}`;
+
+const elEur = document.getElementById('totalExpenseEur');
+if (elEur) elEur.textContent = `EUR €${totalEUR.toFixed(2)}`;
+
+const elRate = document.getElementById('exchangeRate');
+if (elRate) elRate.textContent = EUR_TO_HKD;
 
             const travelersCount = travelers && travelers.length > 0 ? travelers.length : 1;
-            const perPersonHKD = totalHKD / travelersCount;
-            const perPersonEUR = totalEUR / travelersCount;
-            
-            document.getElementById('perPersonExpense').textContent = 
-                `人均支出: HKD $${perPersonHKD.toFixed(2)} (EUR €${perPersonEUR.toFixed(2)})`;
-
-            // 計算各付款人支出與應補貼/收回金額
-            const paidBy = {};
-            travelers.forEach(n => paidBy[n] = 0);
-
-            expenses.forEach(exp => {
-                const amountHKD = exp.currency === 'EUR' ? exp.amount * EUR_TO_HKD : exp.amount;
-                const p = exp.payer || travelers[0];
-                if (paidBy[p] === undefined) paidBy[p] = 0;
-                paidBy[p] += amountHKD;
-            });
+            document.getElementById('perPersonExpense').textContent =
+                `參考平均: HKD $${(totalHKD / travelersCount).toFixed(2)} (EUR €${(totalEUR / travelersCount).toFixed(2)})`;
 
             const perPayerDiv = document.getElementById('perPayerPaid');
-            if(perPayerDiv) {
+            if (perPayerDiv) {
                 perPayerDiv.innerHTML = `
-                    <div style="margin-top:10px; padding-top:10px; border-top:1px solid rgba(255,255,255,0.3);">
-                        <div style="font-weight:700; margin-bottom:8px;">💳 各人已付與結算:</div>
-                        ${Object.entries(paidBy).map(([name, hkd]) => {
-                            const diffHKD = hkd - perPersonHKD;
-                            let diffText = '';
-                            if (diffHKD > 0.01) {
-                                diffText = `<span style="color:#28a745; font-weight:600;">(需收回 HKD $${diffHKD.toFixed(1)})</span>`;
-                            } else if (diffHKD < -0.01) {
-                                diffText = `<span style="color:#ffc107; font-weight:600;">(需補貼 HKD $${Math.abs(diffHKD).toFixed(1)})</span>`;
-                            } else {
-                                diffText = `<span style="color:#e0e0e0;">(已結清)</span>`;
-                            }
-                            return `<div style="display:flex; justify-content:space-between; margin-bottom:6px; font-size:0.95em;">
-                                <span>👤 ${name} <span style="font-size:0.85em; color:#ddd;">(已付: $${hkd.toFixed(0)})</span></span>
-                                <span style="text-align:right;">${diffText}</span>
-                            </div>`;
-                        }).join('')}
-                    </div>
+                  <div style="margin-top:10px; padding-top:10px; border-top:1px solid rgba(255,255,255,0.3); text-align:left;">
+                    <div style="font-weight:700; margin-bottom:8px;">🧾 各人分攤與結算差額:</div>
+                    ${travelers.map(name => {
+                        const paidHKD = paid[name] / 100;
+                        const owedHKD = owed[name] / 100;
+                        const balHKD = balance[name] / 100;
+
+                        let balText = '';
+                        if (balHKD > 0.009) balText = `<span style="color:#a8f0c6; font-weight:700;">需收回 HKD $${balHKD.toFixed(2)}</span>`;
+                        else if (balHKD < -0.009) balText = `<span style="color:#ffcaca; font-weight:700;">需補回 HKD $${(-balHKD).toFixed(2)}</span>`;
+                        else balText = `<span style="color:#e0e0e0; font-weight:700;">已打和</span>`;
+
+                        return `
+                          <div style="display:flex; justify-content:space-between; gap:10px; padding:6px 0; border-bottom:1px dashed rgba(255,255,255,0.25);">
+                            <div style="font-weight:700;">${name}</div>
+                            <div style="text-align:right;">
+                              <div style="font-size:0.92em;">已付 $${paidHKD.toFixed(2)}｜應攤 $${owedHKD.toFixed(2)}</div>
+                              <div>${balText}</div>
+                            </div>
+                          </div>
+                        `;
+                    }).join('')}
+                  </div>
                 `;
             }
 
-                       list.innerHTML = expenses.map((exp, index) => `
-                <div class="expense-item">
-                    <div class="expense-info">
-                        <div style="display: flex; gap: 15px; align-items: baseline; margin-bottom: 8px;">
-                            <span style="font-weight: bold; font-size: 1.1em; color: #333;">${exp.category}</span>
-                            <span style="color: #888; font-size: 0.85em;">${exp.date}</span>
-                            <span style="background: #e9ecef; color: #495057; padding: 2px 6px; border-radius: 4px; font-size: 0.8em; margin-left: 5px;">💳 ${exp.payer || travelers[0]}</span>
-                        </div>
-                        <div style="color: #444; font-size: 1em; margin-bottom: 5px;">${exp.note}</div>
-                        <div class="currency-display" style="color: #666; font-size: 0.85em;">
-                            ${exp.currency === 'EUR' 
-                                ? `EUR €${exp.amount.toFixed(2)} <span style="color:#aaa;">≈ HKD $${(exp.amount * EUR_TO_HKD).toFixed(2)}</span>`
-                                : `HKD $${exp.amount.toFixed(2)}`
-                            }
-                        </div>
-                    </div>
-                    <div style="display: flex; align-items: center; gap: 15px;">
-                        <div class="expense-amount">${exp.currency === 'EUR' ? '€' : '$'}${exp.amount.toFixed(2)}</div>
-                        <button style="background: #ffe3e3; border: 1px solid #ffcccc; cursor: pointer; padding: 4px; border-radius: 4px; display: flex; align-items: center; justify-content: center; width: 24px; height: 24px; font-size: 12px; transition: all 0.2s; margin-left: auto;" onclick="deleteExpense(${index})" title="刪除" onmouseover="this.style.background='#ffcccc'" onmouseout="this.style.background='#ffe3e3'">❌</button>
-                    </div>
-                </div>
-            `).join('');
+            if (list) {
+                list.innerHTML = expenses.map((exp, index) => {
+                    const parts = normalizeParticipants(exp);
+                    const participantsLabel = (parts.length === travelers.length) ? '全部' : parts.join(', ');
+                    const approxHKD = exp.currency === 'EUR' ? ` <span style="color:#aaa;">≈ HKD $${(exp.amount * EUR_TO_HKD).toFixed(2)}</span>` : '';
 
+                    return `
+                      <div class="expense-item">
+                        <div class="expense-info">
+                          <div style="display:flex; gap:12px; align-items:baseline; flex-wrap:wrap; margin-bottom: 8px;">
+                            <span style="font-weight:bold; font-size:1.1em; color:#333;">${exp.category}</span>
+                            <span style="color:#888; font-size:0.85em;">${exp.date || ''}</span>
+                            <span style="background:#e9ecef; color:#495057; padding:2px 6px; border-radius:4px; font-size:0.8em;">💳 付款: ${exp.payer || travelers[0]}</span>
+                            <span style="background:#e3f2fd; color:#0d47a1; padding:2px 6px; border-radius:4px; font-size:0.8em;">👥 受惠: ${participantsLabel}</span>
+                          </div>
+                          <div style="color:#444; font-size:1em; margin-bottom:5px;">${exp.note || ''}</div>
+                          <div class="currency-display" style="color:#666; font-size:0.85em;">
+                            ${exp.currency === 'EUR' ? `EUR €${Number(exp.amount).toFixed(2)}${approxHKD}` : `HKD $${Number(exp.amount).toFixed(2)}`}
+                          </div>
+                        </div>
+                        <div style="display:flex; align-items:center; gap:15px;">
+                          <div class="expense-amount">${exp.currency === 'EUR' ? '€' : '$'}${Number(exp.amount).toFixed(2)}</div>
+                          <button style="background:#ffe3e3; border:1px solid #ffcccc; cursor:pointer; padding:4px; border-radius:4px; display:flex; align-items:center; justify-content:center; width:24px; height:24px; font-size:12px;" onclick="deleteExpense(${index})" title="刪除">❌</button>
+                        </div>
+                      </div>
+                    `;
+                }).join('');
+            }
+
+            const settlementDiv = document.getElementById('settlementResult');
+            if (settlementDiv && settlementDiv.dataset.visible === '1') {
+                renderSettlement();
+            }
+        }
+        /* ---------- 以下為新增的結算運算引擎 ---------- */
+        function renderExpenseParticipantsUI() {
+            const wrap = document.getElementById('expenseParticipants');
+            if (!wrap) return;
+            const selected = new Set(getSelectedExpenseParticipants() || []);
+            const shouldDefaultAll = selected.size === 0;
+
+            wrap.innerHTML = `
+              <div class="participant-actions">
+                <button type="button" onclick="setAllExpenseParticipants(true)">全選 (共同開銷)</button>
+                <button type="button" onclick="setAllExpenseParticipants(false)">清除</button>
+              </div>
+              ${travelers.map((name, idx) => {
+                  const id = `expPart_${idx}`;
+                  const checked = shouldDefaultAll ? true : selected.has(name);
+                  return `
+                    <label class="participant-pill" for="${id}">
+                      <input id="${id}" type="checkbox" value="${name}" ${checked ? 'checked' : ''} style="transform: translateY(1px);" />
+                      <span>${name}</span>
+                    </label>
+                  `;
+              }).join('')}
+            `;
         }
 
-        function addExpense() {
+        function getSelectedExpenseParticipants() {
+            const wrap = document.getElementById('expenseParticipants');
+            if (!wrap) return travelers.slice();
+            return Array.from(wrap.querySelectorAll('input[type="checkbox"]:checked')).map(x => x.value).filter(n => travelers.includes(n));
+        }
+
+        function setAllExpenseParticipants(flag) {
+            const wrap = document.getElementById('expenseParticipants');
+            if (!wrap) return;
+            wrap.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = !!flag);
+        }
+
+        function normalizeParticipants(exp) {
+            if (exp && Array.isArray(exp.participants) && exp.participants.length > 0) {
+                const filtered = exp.participants.filter(n => travelers.includes(n));
+                return filtered.length > 0 ? filtered : travelers.slice();
+            }
+            return travelers.slice(); 
+        }
+
+        function toHKDCents(exp) {
+            const amt = Number(exp.amount) || 0;
+            const hkd = (exp.currency === 'EUR') ? (amt * EUR_TO_HKD) : amt;
+            return Math.round(hkd * 100);
+        }
+
+        function computeBalancesCents() {
+            const paid = {}; const owed = {}; const balance = {};
+            travelers.forEach(n => { paid[n] = 0; owed[n] = 0; });
+            let totalCents = 0;
+
+            expenses.forEach(exp => {
+                const amountCents = toHKDCents(exp);
+                totalCents += amountCents;
+
+                const payer = (exp.payer && travelers.includes(exp.payer)) ? exp.payer : travelers[0];
+                if (paid[payer] === undefined) paid[payer] = 0;
+                paid[payer] += amountCents;
+
+                const parts = normalizeParticipants(exp);
+                const k = parts.length || 1;
+                const share = Math.floor(amountCents / k);
+                let rem = amountCents - share * k; 
+
+                parts.forEach((name, idx) => {
+                    if (owed[name] === undefined) owed[name] = 0;
+                    owed[name] += share + (idx < rem ? 1 : 0);
+                });
+            });
+
+            travelers.forEach(n => { balance[n] = (paid[n] || 0) - (owed[n] || 0); });
+            return { totalCents, paid, owed, balance };
+        }
+
+        function computeMinTransfers(balanceByName) {
+            const names = travelers.filter(n => (balanceByName[n] || 0) !== 0);
+            const bals = names.map(n => balanceByName[n]);
+            let best = null;
+
+            function dfs(currTransfers) {
+                if (best && currTransfers.length >= best.length) return;
+                let i = -1;
+                for (let idx = 0; idx < bals.length; idx++) {
+                    if (bals[idx] < 0) { i = idx; break; }
+                }
+                if (i === -1) { best = currTransfers.slice(); return; }
+
+                const seen = new Set();
+                for (let j = 0; j < bals.length; j++) {
+                    if (bals[j] <= 0 || seen.has(bals[j])) continue;
+                    seen.add(bals[j]);
+
+                    const x = Math.min(-bals[i], bals[j]); 
+                    bals[i] += x; bals[j] -= x;
+                    currTransfers.push({ from: names[i], to: names[j], cents: x });
+                    dfs(currTransfers);
+                    currTransfers.pop();
+                    bals[j] += x; bals[i] -= x;
+                }
+            }
+            dfs([]);
+            return best || [];
+        }
+
+        function renderSettlement() {
+            const out = document.getElementById('settlementResult');
+            if (!out) return;
+            const { balance } = computeBalancesCents();
+            const transfers = computeMinTransfers(balance);
+            out.dataset.visible = '1';
+
+            if (transfers.length === 0) {
+                out.innerHTML = `<div style="padding:12px; background:#e9f7ef; border:1px solid #c3e6cb; border-radius:10px; color:#155724; font-weight:bold;">✅ 目前不需要轉帳，帳目已平！</div>`;
+                return;
+            }
+
+            out.innerHTML = `
+              <div style="padding:15px; background:#fff; border:1px solid #e0e0e0; border-radius:12px;">
+                <div style="font-weight:800; margin-bottom:12px; font-size: 1.1em; color: var(--color-primary);">✅ 最佳轉帳方案（只需 ${transfers.length} 筆）</div>
+                ${transfers.map(t => `
+                  <div style="display:flex; justify-content:space-between; align-items: center; gap:10px; padding:8px 0; border-bottom:1px dashed #eee;">
+                    <div style="font-weight:700; font-size:1.1em;">
+                       <span style="color:#dc3545;">${t.from}</span> <span style="color:#888;">轉給</span> <span style="color:#28a745;">${t.to}</span>
+                    </div>
+                    <div style="text-align:right;">
+                      <div style="font-weight:900; color:#333; font-size:1.1em;">HKD $${(t.cents / 100).toFixed(2)}</div>
+                      <div style="color:#777; font-size:0.85em;">≈ EUR €${((t.cents / 100) / EUR_TO_HKD).toFixed(2)}</div>
+                    </div>
+                  </div>
+                `).join('')}
+              </div>
+            `;
+        }
+
+        function showSettlement() { renderSettlement(); }
+        /* ---------- 結算運算引擎結束 ---------- */
+
+
+                function addExpense() {
             const date = document.getElementById('expenseDate').value;
             const category = document.getElementById('expenseCategory').value;
             const currency = document.getElementById('expenseCurrency').value;
@@ -2260,13 +2447,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            expenses.push({ date, category, currency, amount, note, payer });
+            const participants = getSelectedExpenseParticipants();
+            if (!participants || participants.length === 0) {
+                alert('請至少選擇 1 位「為誰付款」的受惠者');
+                return;
+            }
+
+            expenses.push({ date, category, currency, amount, note, payer, participants });
             saveToLocalStorage('expenses', expenses);
             updateExpenseDisplay();
 
             document.getElementById('expenseAmount').value = '';
             document.getElementById('expenseNote').value = '';
         }
+
 
         function deleteExpense(index) {
             if (confirm('確定要刪除這筆支出嗎？')) {
