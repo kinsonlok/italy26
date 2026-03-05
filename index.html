@@ -1681,16 +1681,16 @@
 
     <!-- Sub-tabs for Guide -->
     <div style="display: flex; gap: 10px; overflow-x: auto; margin-bottom: 20px; padding-bottom: 10px;">
-        <button class="guide-subtab-btn" data-guide-tab="colosseum" style="padding: 10px 15px; border: none; border-radius: 20px; background: #e9ecef; color: #333; cursor: pointer; white-space: nowrap;">🏛️ 羅馬鬥獸場</button>
+        <button class="guide-subtab-btn active" data-guide-tab="colosseum" style="padding: 10px 15px; border: none; border-radius: 20px; background: #007BFF; color: white; cursor: pointer; white-space: nowrap;">🏛️ 羅馬鬥獸場</button>
         <button class="guide-subtab-btn" data-guide-tab="vatican" style="padding: 10px 15px; border: none; border-radius: 20px; background: #e9ecef; color: #333; cursor: pointer; white-space: nowrap;">⛪ 梵蒂岡博物館</button>
-		<button class="guide-subtab-btn active" data-guide-tab="uffizi" style="padding: 10px 15px; border: none; border-radius: 20px; background: #007BFF; color: white; cursor: pointer; white-space: nowrap;">🖼️ 烏菲茲美術館</button>
+		<button class="guide-subtab-btn" data-guide-tab="uffizi" style="padding: 10px 15px; border: none; border-radius: 20px; background: #e9ecef; color: #333; cursor: pointer; white-space: nowrap;">🖼️ 烏菲茲美術館</button>
         <button class="guide-subtab-btn" data-guide-tab="duomo" style="padding: 10px 15px; border: none; border-radius: 20px; background: #e9ecef; color: #333; cursor: pointer; white-space: nowrap;">⛪ 米蘭大教堂</button>
     </div>
 
     <!-- Guide Content Container -->
     <div id="guide-content-container">
-        <!-- Uffizi Content (Active initially) -->
-        <div id="guide-uffizi" class="guide-section">
+        <!-- Uffizi Content (Hidden) -->
+                <div id="guide-uffizi" class="guide-section" style="display: none;">
             <h3 style="margin-bottom: 15px; color: #2c3e50;">烏菲茲美術館 (Uffizi Gallery) 重點畫作</h3>
             <p style="margin-bottom: 20px; color: #555; font-size: 0.9em; background: #fff3cd; padding: 10px; border-radius: 5px; border-left: 4px solid #ffc107;">💡 提示：按一下畫作標題看更多詳細解說。</p>
 
@@ -1896,8 +1896,8 @@
     
         </div>
 
-        <!-- Colosseum Content (Hidden) -->
-        <div id="guide-colosseum" class="guide-section" style="display: none;">
+        <!-- Colosseum Content (Active initially) -->
+                <div id="guide-colosseum" class="guide-section">
             <h3 style="margin-bottom: 15px; color: #2c3e50;">羅馬鬥獸場 (Colosseum) 導賞重點</h3>
             
         <div class="guide-card" style="margin-bottom: 15px; border: 1px solid #eee; border-radius: 8px; overflow: hidden; background: white; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
