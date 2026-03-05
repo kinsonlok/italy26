@@ -633,10 +633,6 @@
             margin-bottom: 5px;
         }
     </style>
-
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#4a90e2">
-    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/323/323315.png">
 </head>
 <body>
     <button class="nav-arrow left" onclick="navigateTabs(-1)">‹</button>
@@ -1323,14 +1319,6 @@
                     <div class="form-group">
                         <label>付款人</label>
                         <select id="expensePayer"></select>
-                    </div>
-                    <div class="form-group" style="margin-bottom: 20px;">
-                        <label>受惠者（分攤對象）</label>
-                        <div id="expenseParticipants" style="display:flex; flex-wrap:wrap; gap:10px; margin-top:8px;"></div>
-                        <div style="margin-top:8px; display:flex; gap:8px; flex-wrap:wrap;">
-                            <button class="btn btn-secondary" type="button" onclick="selectAllParticipants(true)" style="padding:4px 8px; font-size:13px;">全選</button>
-                            <button class="btn btn-secondary" type="button" onclick="selectAllParticipants(false)" style="padding:4px 8px; font-size:13px;">全不選</button>
-                        </div>
                     </div>
                     <div class="form-group">
                         <label>金額</label>
@@ -2088,7 +2076,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 btn.classList.add('active');
                 document.getElementById(btn.dataset.tab).classList.add('active');
                 saveToLocalStorage('activeTab', btn.dataset.tab);
-                if (location.hash !== '#' + btn.dataset.tab) { history.replaceState(null, '', '#' + btn.dataset.tab); }
             });
         });
 
@@ -2152,25 +2139,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     payerSelect.value = currentPayer;
                 }
             }
-
-            const participantsWrap = document.getElementById('expenseParticipants');
-            if(participantsWrap){
-              participantsWrap.innerHTML = travelers.map((name, idx) => `
-                <label style="display:inline-flex; align-items:center; gap:6px; padding:6px 10px; border-radius:999px; background:#f8f9fa; border:1px solid #e9ecef; cursor:pointer; font-size:14px;">
-                  <input type="checkbox" class="expense-participant" value="${name}" checked style="transform:scale(1.1);">
-                  <span>${name}</span>
-                </label>
-              `).join('');
-            }
-        }
-
-        function selectAllParticipants(checked){
-          document.querySelectorAll('.expense-participant').forEach(cb => cb.checked = checked);
-        }
-        function getSelectedParticipants(){
-          return Array.from(document.querySelectorAll('.expense-participant'))
-            .filter(cb => cb.checked)
-            .map(cb => cb.value);
         }
 
         function addTraveler() {
@@ -2219,92 +2187,48 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('perPersonExpense').textContent = 
                 `人均支出: HKD $${perPersonHKD.toFixed(2)} (EUR €${perPersonEUR.toFixed(2)})`;
 
-            // 新的分帳與結算邏輯
-            const balances = {};
+            // 計算各付款人支出與應補貼/收回金額
             const paidBy = {};
-            (travelers || ['我']).forEach(n => { balances[n] = 0; paidBy[n] = 0; });
+            travelers.forEach(n => paidBy[n] = 0);
 
             expenses.forEach(exp => {
-                const amtHKD = exp.currency === 'EUR' ? exp.amount * EUR_TO_HKD : exp.amount;
-                const payer = exp.payer || (travelers && travelers[0]) || '我';
-                const participants = (exp.participants && exp.participants.length) ? exp.participants : (travelers || ['我']);
-                const share = amtHKD / participants.length;
-
-                if (paidBy[payer] === undefined) paidBy[payer] = 0;
-                paidBy[payer] += amtHKD;
-
-                if (balances[payer] === undefined) balances[payer] = 0;
-                balances[payer] += amtHKD;
-
-                participants.forEach(p => {
-                    if (balances[p] === undefined) balances[p] = 0;
-                    balances[p] -= share;
-                });
+                const amountHKD = exp.currency === 'EUR' ? exp.amount * EUR_TO_HKD : exp.amount;
+                const p = exp.payer || travelers[0];
+                if (paidBy[p] === undefined) paidBy[p] = 0;
+                paidBy[p] += amountHKD;
             });
-
-            // 結算建議 (greedy)
-            const creditors = [];
-            const debtors = [];
-            Object.entries(balances).forEach(([name, bal]) => {
-                const v = Math.round(bal * 100) / 100;
-                if (v > 0.01) creditors.push({ name, amt: v });
-                else if (v < -0.01) debtors.push({ name, amt: -v });
-            });
-            creditors.sort((a,b) => b.amt - a.amt);
-            debtors.sort((a,b) => b.amt - a.amt);
-
-            const transfers = [];
-            let i=0, j=0;
-            while(i < debtors.length && j < creditors.length){
-                const pay = debtors[i];
-                const recv = creditors[j];
-                const x = Math.min(pay.amt, recv.amt);
-                transfers.push({ from: pay.name, to: recv.name, amount: x });
-
-                pay.amt = Math.round((pay.amt - x) * 100) / 100;
-                recv.amt = Math.round((recv.amt - x) * 100) / 100;
-
-                if(pay.amt <= 0.01) i++;
-                if(recv.amt <= 0.01) j++;
-            }
 
             const perPayerDiv = document.getElementById('perPayerPaid');
             if(perPayerDiv) {
-                let htmlStr = `
+                perPayerDiv.innerHTML = `
                     <div style="margin-top:10px; padding-top:10px; border-top:1px solid rgba(255,255,255,0.3);">
-                        <div style="font-weight:700; margin-bottom:8px;">💳 各人已付與智能結算:</div>
-                        ${Object.entries(balances).map(([name, bal]) => {
-                            const hkd = paidBy[name] || 0;
+                        <div style="font-weight:700; margin-bottom:8px;">💳 各人已付與結算:</div>
+                        ${Object.entries(paidBy).map(([name, hkd]) => {
+                            const diffHKD = hkd - perPersonHKD;
                             let diffText = '';
-                            if (bal > 0.01) diffText = \`<span style="color:#a8e6cf; font-weight:600;">(需收回 HKD $\${bal.toFixed(1)})</span>\`;
-                            else if (bal < -0.01) diffText = \`<span style="color:#ffb7b2; font-weight:600;">(需補貼 HKD $\${Math.abs(bal).toFixed(1)})</span>\`;
-                            else diffText = \`<span style="color:#e0e0e0;">(已平衡)</span>\`;
-
-                            return \`<div style="display:flex; justify-content:space-between; margin-bottom:6px; font-size:0.95em;">
-                                <span>👤 \${name} <span style="font-size:0.85em; color:#ddd;">(已付: $\${hkd.toFixed(0)})</span></span>
-                                <span style="text-align:right;">\${diffText}</span>
-                            </div>\`;
+                            if (diffHKD > 0.01) {
+                                diffText = `<span style="color:#28a745; font-weight:600;">(需收回 HKD $${diffHKD.toFixed(1)})</span>`;
+                            } else if (diffHKD < -0.01) {
+                                diffText = `<span style="color:#ffc107; font-weight:600;">(需補貼 HKD $${Math.abs(diffHKD).toFixed(1)})</span>`;
+                            } else {
+                                diffText = `<span style="color:#e0e0e0;">(已結清)</span>`;
+                            }
+                            return `<div style="display:flex; justify-content:space-between; margin-bottom:6px; font-size:0.95em;">
+                                <span>👤 ${name} <span style="font-size:0.85em; color:#ddd;">(已付: $${hkd.toFixed(0)})</span></span>
+                                <span style="text-align:right;">${diffText}</span>
+                            </div>`;
                         }).join('')}
+                    </div>
                 `;
-                if(transfers.length > 0) {
-                    htmlStr += `
-                        <div style="margin-top:10px; padding:10px; background:rgba(255,255,255,0.1); border-radius:8px;">
-                            <div style="font-weight:700; margin-bottom:6px; color:#fff;">💡 建議轉帳（最少次數）：</div>
-                            ${transfers.map(t => `<div style="font-size:0.9em; margin-bottom:4px;">➡️ \${t.from} 付款 <b>$\${t.amount.toFixed(0)}</b> 給 \${t.to}</div>`).join('')}
-                        </div>
-                    `;
-                }
-                htmlStr += `</div>`;
-                perPayerDiv.innerHTML = htmlStr;
             }
 
-            list.innerHTML = expenses.map((exp, index) => `
+                       list.innerHTML = expenses.map((exp, index) => `
                 <div class="expense-item">
                     <div class="expense-info">
                         <div style="display: flex; gap: 15px; align-items: baseline; margin-bottom: 8px;">
                             <span style="font-weight: bold; font-size: 1.1em; color: #333;">${exp.category}</span>
                             <span style="color: #888; font-size: 0.85em;">${exp.date}</span>
-                            <span style="background: #e9ecef; color: #495057; padding: 2px 6px; border-radius: 4px; font-size: 0.8em; margin-left: 5px;">💳 ${exp.payer || (travelers && travelers[0]) || '我'} 為 ${exp.participants && exp.participants.length ? exp.participants.join(', ') : (travelers && travelers[0] ? travelers[0] : '我')}</span>
+                            <span style="background: #e9ecef; color: #495057; padding: 2px 6px; border-radius: 4px; font-size: 0.8em; margin-left: 5px;">💳 ${exp.payer || travelers[0]}</span>
                         </div>
                         <div style="color: #444; font-size: 1em; margin-bottom: 5px;">${exp.note}</div>
                         <div class="currency-display" style="color: #666; font-size: 0.85em;">
@@ -2336,12 +2260,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            const participants = getSelectedParticipants();
-            if(!participants || participants.length === 0){
-              alert('請選擇至少一位受惠者（分攤對象）');
-              return;
-            }
-            expenses.push({ date, category, currency, amount, note, payer, participants });
+            expenses.push({ date, category, currency, amount, note, payer });
             saveToLocalStorage('expenses', expenses);
             updateExpenseDisplay();
 
@@ -3093,20 +3012,21 @@ const ATTRACTION_MEDIA_MAP = {
   "villamonastero": { wikiTitle: "Villa_Monastero" }
 };
 
-async async function _getWikipediaThumbURL(wikiTitle){
+async function _getWikipediaThumbURL(wikiTitle){
   const cacheKey = "wikiThumb:" + wikiTitle;
-  const cached = localStorage.getItem(cacheKey);
-  if (cached) return cached;
-  try {
-    const endpoint = "https://en.wikipedia.org/api/rest_v1/page/summary/" + encodeURIComponent(wikiTitle);
-    const res = await fetch(endpoint, { cache: "force-cache" });
-    if(!res.ok) throw new Error("Wikipedia fetch failed: " + res.status);
-    const data = await res.json();
-    const url = (data && data.thumbnail && data.thumbnail.source) ||
-                (data && data.originalimage && data.originalimage.source) || "";
-    if(url) localStorage.setItem(cacheKey, url);
-    return url;
-  } catch (e) { return ""; }
+  const cached = sessionStorage.getItem(cacheKey);
+  if(cached) return cached;
+
+  const endpoint = "https://en.wikipedia.org/api/rest_v1/page/summary/" + encodeURIComponent(wikiTitle);
+  const res = await fetch(endpoint, { cache: "force-cache" });
+  if(!res.ok) throw new Error("Wikipedia fetch failed: " + res.status);
+  const data = await res.json();
+
+  const url = (data && data.thumbnail && data.thumbnail.source) ||
+              (data && data.originalimage && data.originalimage.source) ||
+              "";
+  if(url) sessionStorage.setItem(cacheKey, url);
+  return url;
 }
 
 function _ensureAttractionImage(item){
