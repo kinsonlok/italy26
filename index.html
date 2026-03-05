@@ -2233,10 +2233,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // 展開/收起每日行程
         function toggleDay(day) {
-            if (typeof isItineraryEditMode !== 'undefined' && isItineraryEditMode) return;
-            const details = document.getElementById('day' + day);
-            if (details) details.classList.toggle('show');
-        }
+    // 檢查這次點擊是不是來自 <a> 連結（例如導航按鈕），如果是，就直接取消動作，不要收合卡片
+    if (event && event.target && event.target.closest('a')) {
+        return; 
+    }
+    
+    if (typeof isItineraryEditMode !== 'undefined' && isItineraryEditMode) return;
+    const details = document.getElementById('day' + day);
+    if (details) details.classList.toggle('show');
+}
 
         // 記帳功能
         let expenses = loadFromLocalStorage('expenses') || [];
@@ -2325,7 +2330,7 @@ const elEur = document.getElementById('totalExpenseEur');
 if (elEur) elEur.textContent = `EUR €${totalEUR.toFixed(2)}`;
 
 const elRate = document.getElementById('exchangeRateInput');
-if (elRate) elRate.textContent = EUR_TO_HKD;
+if (elRate) elRate.value = EUR_TO_HKD;
 
             const travelersCount = travelers && travelers.length > 0 ? travelers.length : 1;
             document.getElementById('perPersonExpense').textContent =
