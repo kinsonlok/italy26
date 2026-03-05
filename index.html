@@ -3532,6 +3532,17 @@ function toggleEditItinerary() {
                 }
             }
         }
+document.addEventListener('DOMContentLoaded', () => {
+    const itineraryContainer = document.getElementById('itineraryContainer');
+    if (itineraryContainer) {
+        itineraryContainer.addEventListener('click', (e) => {
+            // 如果點擊的是連結 (a 標籤) 或者是連結裡面的元素
+            if (e.target.closest('a')) {
+                e.stopPropagation(); // 阻止點擊事件向外傳遞給 day-card
+            }
+        });
+    }
+});
 </script>
 </body>
 </html>
