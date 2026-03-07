@@ -2195,7 +2195,11 @@ document.addEventListener('DOMContentLoaded', () => {
             localStorage.setItem(key, JSON.stringify(data));
             // 將資料同步上傳到 Firebase 雲端
             if (typeof db !== 'undefined' && ['expenses', 'travelers', 'todos', 'shoppingList', 'customExchangeRate', 'restaurants', 'notes'].includes(key)) {
-                db.ref(key).set(data);
+                if (Array.isArray(data) && data.length === 0) {
+                    db.ref(key).remove();
+                } else {
+                    db.ref(key).set(data);
+                }
             }
         }
 
@@ -2229,7 +2233,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
         syncKeys.forEach(key => {
             db.ref(key).on('value', (snapshot) => {
-                const data = snapshot.val();
+                let data = snapshot.val();
+                if (data === null) {
+                    if (['expenses', 'travelers', 'todos', 'shoppingList', 'restaurants'].includes(key)) data = [];
+                    else if (key === 'customExchangeRate') data = 9.2;
+                    else if (key === 'notes') data = '';
+                }
                 if (data !== null) {
                     // 1. 更新本地端 localStorage
                     localStorage.setItem(key, JSON.stringify(data));
@@ -2371,6 +2380,7 @@ function updateExchangeRate() {
             }
             travelers.push(name);
             input.value = '';
+            saveToLocalStorage('travelers', travelers);
             renderTravelersUI();
             updateExpenseDisplay();
         }
@@ -2382,6 +2392,7 @@ function updateExchangeRate() {
             }
             if (confirm(`確定要刪除旅行者「${travelers[index]}」嗎？`)) {
                 travelers.splice(index, 1);
+                saveToLocalStorage('travelers', travelers);
                 renderTravelersUI();
                 updateExpenseDisplay();
             }
