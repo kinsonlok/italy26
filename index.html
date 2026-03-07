@@ -2981,6 +2981,10 @@ if (elRate) elRate.textContent = EUR_TO_HKD;
         updateRestaurantDisplay();
         updateTodoDisplay();
         updateShoppingDisplay();
+	        // 設定記帳預設日期為今天
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('expenseDate').value = today;
+
 
         // 替換成你在 OpenWeatherMap 申請的 API Key
         const WEATHER_API_KEY = atob('NzFkYzc5ZjNmMmRlYTJmZGYxNmZiN2NjNDYxOTVmYzE='); 
