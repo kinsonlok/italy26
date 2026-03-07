@@ -1374,7 +1374,10 @@
                     <label>備註</label>
                     <input type="text" id="expenseNote" placeholder="例如：午餐、地鐵票、紀念品">
                 </div>
-                <button class="btn btn-primary" onclick="addExpense()">➕ 新增支出</button>
+                <div style="display: flex; gap: 10px;">
+                    <button id="saveExpenseBtn" class="btn btn-primary" onclick="addExpense()" style="flex: 1;">➕ 新增支出</button>
+                    <button id="cancelEditBtn" class="btn btn-secondary" onclick="cancelEditExpense()" style="display: none; background: #6c757d;">❌ 取消</button>
+                </div>
             </div>
 
             <div class="expense-list" id="expenseList"></div>
@@ -2475,6 +2478,7 @@ if (elRate) elRate.textContent = EUR_TO_HKD;
                         </div>
                         <div style="display:flex; align-items:center; gap:15px;">
                           <div class="expense-amount">${exp.currency === 'EUR' ? '€' : '$'}${Number(exp.amount).toFixed(2)}</div>
+                          <button style="background:#e3f2fd; border:1px solid #bbdefb; cursor:pointer; padding:4px; border-radius:4px; display:flex; align-items:center; justify-content:center; width:24px; height:24px; font-size:12px; margin-right:5px;" onclick="editExpense(${index})" title="編輯">✏️</button>
                           <button style="background:#ffe3e3; border:1px solid #ffcccc; cursor:pointer; padding:4px; border-radius:4px; display:flex; align-items:center; justify-content:center; width:24px; height:24px; font-size:12px;" onclick="deleteExpense(${index})" title="刪除">❌</button>
                         </div>
                       </div>
@@ -2630,7 +2634,71 @@ if (elRate) elRate.textContent = EUR_TO_HKD;
         /* ---------- 結算運算引擎結束 ---------- */
 
 
-                function addExpense() {
+                
+        let editingExpenseIndex = -1;
+
+        function editExpense(index) {
+            editingExpenseIndex = index;
+            const exp = expenses[index];
+
+            document.getElementById('expenseDate').value = exp.date || '';
+            document.getElementById('expenseCategory').value = exp.category || '餐飲';
+            document.getElementById('expenseCurrency').value = exp.currency || 'EUR';
+            document.getElementById('expenseAmount').value = exp.amount || '';
+            document.getElementById('expenseNote').value = exp.note || '';
+
+            const payerSelect = document.getElementById('expensePayer');
+            if (payerSelect && exp.payer && travelers.includes(exp.payer)) {
+                payerSelect.value = exp.payer;
+            }
+
+            const wrap = document.getElementById('expenseParticipants');
+            if (wrap) {
+                wrap.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+                    cb.checked = Array.isArray(exp.participants) && exp.participants.includes(cb.value);
+                });
+            }
+
+            const saveBtn = document.getElementById('saveExpenseBtn');
+            if (saveBtn) {
+                saveBtn.innerHTML = '💾 儲存修改';
+                saveBtn.style.background = '#ffc107';
+                saveBtn.style.color = '#333';
+            }
+
+            const cancelBtn = document.getElementById('cancelEditBtn');
+            if (cancelBtn) cancelBtn.style.display = 'inline-flex';
+
+            const formEl = document.querySelector('.expense-form');
+            if (formEl) formEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function cancelEditExpense() {
+            editingExpenseIndex = -1;
+            document.getElementById('expenseAmount').value = '';
+            document.getElementById('expenseNote').value = '';
+
+            const today = new Date();
+            const yyyy = today.getFullYear();
+            const mm = String(today.getMonth() + 1).padStart(2, '0');
+            const dd = String(today.getDate()).padStart(2, '0');
+            const dateInput = document.getElementById('expenseDate');
+            if(dateInput) dateInput.value = `${yyyy}-${mm}-${dd}`;
+
+            setAllExpenseParticipants(true);
+
+            const saveBtn = document.getElementById('saveExpenseBtn');
+            if (saveBtn) {
+                saveBtn.innerHTML = '➕ 新增支出';
+                saveBtn.style.background = 'var(--color-primary)';
+                saveBtn.style.color = 'white';
+            }
+
+            const cancelBtn = document.getElementById('cancelEditBtn');
+            if (cancelBtn) cancelBtn.style.display = 'none';
+        }
+
+        function addExpense() {
             const date = document.getElementById('expenseDate').value;
             const category = document.getElementById('expenseCategory').value;
             const currency = document.getElementById('expenseCurrency').value;
@@ -2649,12 +2717,15 @@ if (elRate) elRate.textContent = EUR_TO_HKD;
                 return;
             }
 
-            expenses.push({ date, category, currency, amount, note, payer, participants });
+            if (editingExpenseIndex > -1) {
+                expenses[editingExpenseIndex] = { date, category, currency, amount, note, payer, participants };
+            } else {
+                expenses.push({ date, category, currency, amount, note, payer, participants });
+            }
             saveToLocalStorage('expenses', expenses);
             updateExpenseDisplay();
 
-            document.getElementById('expenseAmount').value = '';
-            document.getElementById('expenseNote').value = '';
+            cancelEditExpense();
         }
 
 
