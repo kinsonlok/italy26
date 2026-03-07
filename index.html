@@ -2334,8 +2334,10 @@ function updateExchangeRate() {
             const payerSelect = document.getElementById('expensePayer');
             const countText = document.getElementById('travelersCountText');
 
-            if (!travelers || travelers.length === 0) travelers = ['我'];
-            saveToLocalStorage('travelers', travelers);
+            if (!travelers || travelers.length === 0) {
+                travelers = ['我'];
+                // 這裡絕對不能呼叫 saveToLocalStorage，否則新瀏覽器一進來就會把預設值覆蓋掉雲端的資料！
+            }
 
             if(countText) countText.textContent = travelers.length;
 
