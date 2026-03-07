@@ -1329,7 +1329,7 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label>日期</label>
-                        <input type="date" id="expenseDate" value="2026-05-19">
+                        <input type="date" id="expenseDate">
                     </div>
                     <div class="form-group">
                         <label>類別</label>
@@ -2129,11 +2129,20 @@
         <div style="background: white; padding: 20px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
             <h3 style="margin-bottom: 15px; display: flex; align-items: center; gap: 8px;">☁️ 雲端同步狀態</h3>
             <p style="color: #666; margin-bottom: 15px; font-size: 0.95em;">
-                系統會在背景自動同步資料。若遇到網路不穩或想確保拿到最新資料，可手動強制更新。
+                系統會在背景自動同步資料。若遇到網路不穩，可使用下方功能手動介入。
             </p>
-            <button class="btn btn-primary" onclick="forceSync()" style="background: #17a2b8; display: flex; align-items: center; gap: 8px;">
-                <span id="syncIcon">🔄</span> 強制從雲端下載最新資料
-            </button>
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="forceSync()" style="flex: 1; min-width: 200px; background: #17a2b8; border: none; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                    <span id="syncIcon">⬇️</span> 下載：強制覆蓋手機
+                </button>
+                <button class="btn btn-primary" onclick="forceUpload()" style="flex: 1; min-width: 200px; background: #ffc107; color: #333; border: none; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                    <span id="uploadIcon">⬆️</span> 上傳：強制覆蓋雲端
+                </button>
+            </div>
+            <p style="color: #888; font-size: 0.85em; margin-top: 15px; line-height: 1.5;">
+                ⚠️ <strong>下載</strong>：把雲端的資料抓下來（適合剛連上網，想看別人的記帳）。<br>
+                ⚠️ <strong>上傳</strong>：把你剛才離線時記的帳推上去給別人看。
+            </p>
         </div>
 
             <div style="background: white; padding: 20px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
@@ -2200,7 +2209,20 @@ document.addEventListener('DOMContentLoaded', () => {
 // --------------------
 
         // 自動儲存功能
-        function saveToLocalStorage(key, data) {
+        
+        // 設定記帳日期預設為今天
+        window.addEventListener('DOMContentLoaded', () => {
+            const dateInput = document.getElementById('expenseDate');
+            if (dateInput) {
+                const today = new Date();
+                const yyyy = today.getFullYear();
+                const mm = String(today.getMonth() + 1).padStart(2, '0');
+                const dd = String(today.getDate()).padStart(2, '0');
+                dateInput.value = `${yyyy}-${mm}-${dd}`;
+            }
+        });
+
+function saveToLocalStorage(key, data) {
             localStorage.setItem(key, JSON.stringify(data));
             // 將資料同步上傳到 Firebase 雲端
             if (typeof db !== 'undefined' && ['expenses', 'travelers', 'todos', 'shoppingList', 'customExchangeRate', 'restaurants', 'notes'].includes(key)) {
@@ -3282,7 +3304,7 @@ if (elRate) elRate.textContent = EUR_TO_HKD;
             const icon = document.getElementById('syncIcon');
             if (icon) {
                 icon.style.transition = 'transform 0.5s ease';
-                icon.style.transform = 'rotate(360deg)';
+                icon.style.transform = 'translateY(5px)';
             }
 
             if (typeof db !== 'undefined') {
@@ -3305,7 +3327,6 @@ if (elRate) elRate.textContent = EUR_TO_HKD;
                         }
                         completed++;
 
-                        // 當所有 key 都抓取完畢後，重新渲染所有畫面
                         if (completed === syncKeys.length) {
                             if(typeof renderTravelersUI === 'function') renderTravelersUI();
                             if(typeof updateExpenseDisplay === 'function') updateExpenseDisplay();
@@ -3324,7 +3345,7 @@ if (elRate) elRate.textContent = EUR_TO_HKD;
                             setTimeout(() => {
                                 if (icon) {
                                     icon.style.transition = 'none';
-                                    icon.style.transform = 'rotate(0deg)';
+                                    icon.style.transform = 'translateY(0)';
                                 }
                                 alert('✅ 已成功從雲端同步最新資料！');
                             }, 300);
@@ -3335,10 +3356,44 @@ if (elRate) elRate.textContent = EUR_TO_HKD;
                 });
             } else {
                 alert('Firebase 尚未初始化，無法同步。');
-                if (icon) {
-                    icon.style.transition = 'none';
-                    icon.style.transform = 'rotate(0deg)';
-                }
+            }
+        }
+
+        // ==========================================
+        // 手動強制上傳功能 (將本地 localStorage 覆蓋雲端)
+        // ==========================================
+        function forceUpload() {
+            const icon = document.getElementById('uploadIcon');
+            if (icon) {
+                icon.style.transition = 'transform 0.5s ease';
+                icon.style.transform = 'translateY(-5px)';
+            }
+
+            if (typeof db !== 'undefined') {
+                const syncKeys = ['expenses', 'travelers', 'todos', 'shoppingList', 'customExchangeRate', 'restaurants', 'notes'];
+                let promises = [];
+
+                syncKeys.forEach(key => {
+                    const localData = loadFromLocalStorage(key);
+                    if (localData !== null) {
+                        promises.push(db.ref(key).set(localData));
+                    }
+                });
+
+                Promise.all(promises).then(() => {
+                    setTimeout(() => {
+                        if (icon) {
+                            icon.style.transition = 'none';
+                            icon.style.transform = 'translateY(0)';
+                        }
+                        alert('✅ 已成功將本地資料強制上傳並覆蓋雲端！');
+                    }, 300);
+                }).catch(error => {
+                    console.error('Upload failed', error);
+                    alert('上傳失敗，請檢查網路連線。');
+                });
+            } else {
+                alert('Firebase 尚未初始化，無法上傳。');
             }
         }
 
@@ -3706,4 +3761,3 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 </body>
 </html>
-
