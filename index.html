@@ -650,11 +650,6 @@
             margin-bottom: 5px;
         }
     </style>
-
-    <!-- Firebase SDK (v8 compat) for Realtime Sync -->
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
-
 </head>
 <body>
     <button class="nav-arrow left" onclick="navigateTabs(-1)">‹</button>
@@ -2193,83 +2188,12 @@ document.addEventListener('DOMContentLoaded', () => {
         // 自動儲存功能
         function saveToLocalStorage(key, data) {
             localStorage.setItem(key, JSON.stringify(data));
-            // 將資料同步上傳到 Firebase 雲端
-            if (typeof db !== 'undefined' && ['expenses', 'travelers', 'todos', 'shoppingList', 'customExchangeRate', 'restaurants', 'notes'].includes(key)) {
-                db.ref(key).set(data);
-            }
         }
 
         function loadFromLocalStorage(key) {
             const data = localStorage.getItem(key);
             return data ? JSON.parse(data) : null;
         }
-
-        // ==========================================
-        // FIREBASE 即時同步系統初始化
-        // ==========================================
-        const firebaseConfig = {
-          apiKey: "AIzaSyBYYU_-eqHPlVcWWZMCpw6HIqlu5U2ESLg",
-          authDomain: "italy26-9bcad.firebaseapp.com",
-          databaseURL: "https://italy26-9bcad-default-rtdb.firebaseio.com",
-          projectId: "italy26-9bcad",
-          storageBucket: "italy26-9bcad.firebasestorage.app",
-          messagingSenderId: "138060857627",
-          appId: "1:138060857627:web:15831e8f406e24916893be"
-        };
-
-        if (!firebase.apps.length) {
-            firebase.initializeApp(firebaseConfig);
-        }
-        const db = firebase.database();
-
-        let isFirstLoad = true; // 避免首次載入重複渲染
-
-        // 監聽雲端資料變更並即時更新畫面
-        const syncKeys = ['expenses', 'travelers', 'todos', 'shoppingList', 'customExchangeRate', 'restaurants', 'notes'];
-
-        syncKeys.forEach(key => {
-            db.ref(key).on('value', (snapshot) => {
-                const data = snapshot.val();
-                if (data !== null) {
-                    // 1. 更新本地端 localStorage
-                    localStorage.setItem(key, JSON.stringify(data));
-
-                    // 2. 更新記憶體變數並重新渲染畫面
-                    if (key === 'expenses') {
-                        expenses = data;
-                        if(typeof updateExpenseDisplay === 'function') updateExpenseDisplay();
-                    } else if (key === 'travelers') {
-                        travelers = data;
-                        if(typeof renderTravelersUI === 'function') renderTravelersUI();
-                        if(typeof updateExpenseDisplay === 'function') updateExpenseDisplay();
-                    } else if (key === 'todos') {
-                        todos = data;
-                        if(typeof updateTodoDisplay === 'function') updateTodoDisplay();
-                    } else if (key === 'shoppingList') {
-                        shoppingList = data;
-                        if(typeof updateShoppingDisplay === 'function') updateShoppingDisplay();
-                    } else if (key === 'customExchangeRate') {
-                        EUR_TO_HKD = parseFloat(data);
-                        const elRate = document.getElementById('exchangeRateInput');
-                        if (elRate && document.activeElement !== elRate) {
-                            elRate.value = EUR_TO_HKD;
-                        }
-                        if(typeof updateExpenseDisplay === 'function') updateExpenseDisplay();
-                    } else if (key === 'restaurants') {
-                        restaurants = data;
-                        if(typeof updateRestaurantDisplay === 'function') updateRestaurantDisplay();
-                    } else if (key === 'notes') {
-                        notes = data;
-                        const notesEditor = document.getElementById('notesContent');
-                        if (notesEditor && document.activeElement !== notesEditor) {
-                            notesEditor.value = notes;
-                        }
-                    }
-                }
-            });
-        });
-        // ==========================================
-
 
         // Tab 切換
         const tabBtns = document.querySelectorAll('.tab-btn');
@@ -2981,13 +2905,14 @@ if (elRate) elRate.textContent = EUR_TO_HKD;
         updateRestaurantDisplay();
         updateTodoDisplay();
         updateShoppingDisplay();
-	        // 設定記帳預設日期為今天
+
+        // 設定記帳預設日期為今天
         const today = new Date().toISOString().split('T')[0];
         document.getElementById('expenseDate').value = today;
 
 
         // 替換成你在 OpenWeatherMap 申請的 API Key
-        const WEATHER_API_KEY = atob('NzFkYzc5ZjNmMmRlYTJmZGYxNmZiN2NjNDYxOTVmYzE='); 
+        const WEATHER_API_KEY = '71dc79f3f2dea2fdf16fb7cc46195fc1'; 
 
         // 建立城市名稱對照表 (將中文轉為API認得的英文城市名，加入國家代碼確保準確)
         const cityMap = {
@@ -3273,6 +3198,13 @@ if (elRate) elRate.textContent = EUR_TO_HKD;
             if (confirm('警告：這將會刪除所有記帳、筆記與清單！\n這一步無法復原。確定要重設嗎？')) {
                 if (confirm('再次確認：你真的要刪除所有資料嗎？')) {
                     localStorage.clear(); // 清空所有 localStorage
+
+                    // 同步清空 Firebase 雲端資料 (若有啟用 Firebase)
+                    if (typeof db !== 'undefined') {
+                        const syncKeys = ['expenses', 'travelers', 'todos', 'shoppingList', 'customExchangeRate', 'restaurants', 'notes'];
+                        syncKeys.forEach(key => db.ref(key).remove());
+                    }
+
                     alert('所有資料已重設。系統即將重新載入。');
                     location.reload();
                 }
