@@ -1104,7 +1104,7 @@
                        <div class="attraction-item">
                             <strong>14:00</strong> 米蘭精華
                         </div>
-                        <div class="attraction-item">
+                       <div class="attraction-item">
                             - 米蘭大教堂 (登頂)
                    <br>         <a href="https://www.google.com/maps/search/?api=1&query=Milan+Cathedral" target="_blank">🗺️ 導航</a>
                             <a href="https://mangofamily56.com/milan-attractions/" target="_blank">ℹ️ 攻略 </a>
@@ -1213,7 +1213,7 @@
 			<strong>15:30</strong> 返回市中心後取行李往機場
                         </div>
                         <div class="attraction-item">
-                           <strong>19:30</strong> 前抵達 - 抵達 Malpensa T1
+                           <strong>19:30</strong> 前抵達MXP T1
 			<a href="https://maps.app.goo.gl/cP7HZVGWVai7UMfU7?g_st=ic" target="_blank">🗺️ 導航</a>
                         </div>
                         <div class="attraction-item">
@@ -2152,6 +2152,7 @@
 
 // --- 導賞頁面邏輯 ---
 function toggleGuide(id) {
+            if (window.event && window.event.target.closest('a')) return;
     const content = document.getElementById(id + '-content');
     const icon = document.getElementById(id + '-icon');
     if (content.style.display === 'none' || content.style.display === '') {
@@ -2321,6 +2322,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // 展開/收起每日行程
         function toggleDay(day) {
+            if (window.event && window.event.target.closest('a')) return; // 點擊連結時不觸發收合
             if (typeof isItineraryEditMode !== 'undefined' && isItineraryEditMode) return;
             const details = document.getElementById('day' + day);
             if (details) details.classList.toggle('show');
@@ -3377,7 +3379,7 @@ if (elRate) elRate.textContent = EUR_TO_HKD;
             const container = document.getElementById('itineraryContainer');
             if (container) {
                 defaultItineraryHTML = container.innerHTML; // 儲存預設內容
-                const savedItinerary = localStorage.getItem('itineraryHTML_v3');
+                const savedItinerary = localStorage.getItem('itineraryHTML_v4');
                 if (savedItinerary) {
                     container.innerHTML = savedItinerary;
                 }
@@ -3671,7 +3673,7 @@ function toggleEditItinerary() {
 
                 // 儲存至 localStorage
                 const newHTML = container.innerHTML;
-                localStorage.setItem('itineraryHTML_v3', newHTML);
+                localStorage.setItem('itineraryHTML_v4', newHTML);
 
                 // 將除第一天外的其餘天數收起
                 const days = container.querySelectorAll('.day-details');
@@ -3685,7 +3687,7 @@ function toggleEditItinerary() {
 
         function resetItineraryToDefault() {
             if (confirm('確定要放棄所有自訂行程，並恢復成原始預設的「11天意大利行程」嗎？')) {
-                localStorage.removeItem('itineraryHTML_v3');
+                localStorage.removeItem('itineraryHTML_v4');
                 const container = document.getElementById('itineraryContainer');
                 if (container && defaultItineraryHTML) {
                     container.innerHTML = defaultItineraryHTML;
